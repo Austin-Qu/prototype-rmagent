@@ -1,5 +1,5 @@
 == README
 
-Prototype of RM
+Prototype of RM on rails 4.2.0
 
 The last commit is about SendGrid integration
