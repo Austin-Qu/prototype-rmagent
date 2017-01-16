@@ -1,0 +1,14 @@
+.property_image
+  =image_tag ins.property_images_url, size: "223x170", inspection_id: ins.id, class: "property_images"
+  .image_overlay{:inspection_id => ins.id, :onclick => "upload_property_image(event)"}
+    .image_overlay_icon{:inspection_id => ins.id}
+      %i.fa.fa-picture-o.fa-lg{:inspection_id => ins.id}
+    .image_overlay_text{:inspection_id => ins.id}
+      Update Image
+  .image_label{:inspection_id => ins.id}
+    - label_name = ins.status.downcase.gsub(' ', '_')
+    =image_tag "labels/#{label_name}.png", class: "property_image_label", :inspection_id => ins.id
+// =form_tag({action: :upload, controller: :inspections}, multipart: true, class: "property_images_#{ins.id} hide") do 
+//   = hidden_field_tag 'inspection_id', "#{ins.id}"
+//   = file_field_tag :property_images, class: "property_images_#{ins.id}"
+//   = submit_tag "Upload"

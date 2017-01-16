@@ -1,0 +1,2 @@
+module CustomerTermsHelper
+end

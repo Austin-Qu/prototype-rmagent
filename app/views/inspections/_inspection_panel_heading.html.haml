@@ -1,0 +1,20 @@
+%ul.nav.nav-tabs.nav-justified
+  - if on_type == 'Sale'
+    - sale_class = 'active'
+    - lease_class = ''
+  - else
+    - sale_class = ''
+    - lease_class = 'active'
+
+  %li{:class => sale_class}
+    %a{:href => "/inspections?type=Sale", :class => "active-a", "data-remote" => "true", :onclick => "update_current_on_type('Sale')"} 
+      For Sale
+      %span.badge
+        // sale count
+        = current_user.inspections.where(:on_type => 'Sale', :status => 'For Sale').count
+  %li{:class => lease_class}
+    %a{:href => "/inspections?type=Lease", :class => "active-a", "data-remote" => "true", :onclick => "update_current_on_type('Lease')"}
+      For Lease
+      %span.badge
+        // lease count
+        = current_user.inspections.where(:on_type => 'Lease', :status => 'For Lease').count

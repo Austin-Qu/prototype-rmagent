@@ -1,0 +1,51 @@
+= stylesheet_link_tag "leads"
+= javascript_include_tag "leads"
+.row
+  =render '/layouts/sidebar'
+  .main
+    .panel.with-nav-tabs.panel-default
+      .panel-heading.leads
+        =render '/leads/lead_panel_heading', :on_type => @type
+      .panel-body.leads
+        =render '/leads/lead_panel_body', :on_type => @type, :leads => @leads
+
+// Bulk email
+.bulk_email_content.hide
+  =render "/leads/bulk_email"
+// File Upload / Image Upload
+%a#upload_files.upload_files.inline.hide{:href => "#upload_files_colorbox"}
+  #inline_lead_upload_files.hide
+    =render '/leads/upload_files'
+
+:javascript
+  $(document).ready(function() {
+    init_leads();
+  });
+
+  // typeahead in bulk email  Disabed for Beta for now
+  $('#colorbox input#recipients').tagsinput({
+    typeahead: {
+      name: 'select_lead',
+      displayKey: 'name',
+      valueKey: 'email',
+      maxChars: 100,
+      source: function(query) {
+        d = $.get('/inspections/get_leads_emails_by_user.json?user_id=' + user_id);
+        // return d.readyState;
+        d = [{"name": "Tony Zhao","email": "tony@zhao.com"}];
+        console.log(d);
+        return d;
+      }
+    },
+    maxChars: 50
+  });
+
+  $("a.bulk_email.inline").click(function(event){
+    console.log('clicked bulk email');
+    selected_leads = $('input.select_lead:checked');
+    if (selected_leads.length == 0) {
+      bootbox.alert('Please select lead(s) before sending email.');
+      return false;
+    }
+  });
+

@@ -1,0 +1,153 @@
+/*.sidebar-nav > .sidebar-brand img#user_badge {
+    position: relative;
+    left: 139px;
+    top: -47px;
+}
+
+.icon-color {
+    color: #EF6E10;
+}
+
+.badge_account {
+  vertical-align: bottom;
+}
+
+.badge_property {
+}
+
+.badge_crm {
+}
+
+.avatar {
+  display: block;
+  margin: auto;
+  border: 8px solid #6D98BE;
+}
+
+.icons {
+  text-align: center;
+}
+
+.icons span.glyphicon {
+  font-size: 15px;
+  padding: 10px;
+}*/
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+  width: 220px;
+}
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 53px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 0px 0px 0px 0px !important;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+  color: white;
+}
+
+.nav-sidebar > li:not(.active) > a:hover {
+  color: #ffffff !important;
+}
+
+.nav-sidebar > .active {
+  border-left: 25px solid #E9EAED;
+  background-color: #E9EAED;
+}
+
+.nav-sidebar > .active >a{
+  color:#005996 !important;
+}
+
+.nav-sidebar > li:not(.active) {
+  border-left: 25px solid #005996;
+}
+
+.nav-sidebar > li:not(.active):hover {
+  border-left: 25px solid #E9EAED;
+}
+
+.nav-sidebar > li:not(.active) >a:hover,
+.nav-sidebar > li:not(.active) >a:focus {
+  color:#ffffff !important;
+  background-color: #005996;
+}
+
+.nav-sidebar > li:not(.active) >a {
+  color:#bbbbbb !important;
+}
+
+/*.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  margin-left: 0px;
+  color: #ffffff;
+}*/
+
+.nav-sidebar > .active > a {
+  margin-left: 0px;
+  color: #238CC3;
+}
+
+i {
+  width: 15px;
+  text-align: center;
+}
+
+/* custom */
+.sidebar {
+  background-color: #005996;
+}
+.user_side_bar_profile {
+  text-align: center;
+  color: white;
+  background-color: #618EB6;
+  height: 175px;
+  padding: 10px 0px 0px 0px;
+}
+.user_side_bar_profile .name {
+  padding: 10px;
+  font-size: 18px;
+}
+
+.user_side_bar_profile span.inspections {
+  padding: 10px;
+}
+
+.company_logo {
+  margin-bottom: 30px;
+  text-align: center;
+  padding: 0px;
+}
+
+ul.nav.nav-sidebar li i.fa {
+  margin-left: 25px;
+}
+
+.avatar{
+  border: 8px solid #6D98BE;
+}

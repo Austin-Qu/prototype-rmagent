@@ -1,0 +1,27 @@
+= stylesheet_link_tag 'today'
+
+.container
+  .row
+    .col-md-3
+      =render '/layouts/sidebar'
+    .col-md-9
+      .row
+        .col-md-8
+          %h3 Upcoming inspections or auctions
+          %ul
+            %li
+              event 1
+            %li
+              event 2
+        .col-md-4
+          .calendar
+            = month_calendar do |date|
+              = date.day
+      .row
+        .col-md-12
+          %h3 Stats
+          %ul
+            %li 
+              = "Number of properties: #{Property.count}"
+            %li 
+              = "Number of customers: N/A"

@@ -1,0 +1,113 @@
+/ #inline_ipad_email_auto_setting
+%div{:id=>"inline_ipad_email_auto_setting_#{inspection.id}" }
+  // File Send default settings
+  - email_template = EmailTemplate.where(:inspection_id=>inspection.id, :user_id=>current_user.id, :template_type => 'File Send').first
+  - if email_template.blank?
+    - subject = Rails.application.config.email_setting_fs_subject
+    - body = Rails.application.config.email_setting_fs_body
+    - selected_property_files = inspection.property_files_to_array
+  - else
+    - subject = email_template.subject
+    - body = email_template.body
+    - selected_property_files = email_template.property_files_to_array
+  // = form_for email_template, html: {class: "nifty_form form-inline auto_send_files_setting", remote: true} do |f|
+  = form_tag  "/email_templates/ipad_email_setting", class: "nifty_form auto_send_files_setting", remote: true do
+    = hidden_field_tag :template_type, 'File Send'
+    .row
+      .col-md-1
+        = check_box_tag :auto_send, 1, inspection.send_file
+      .col-md-11
+        %h4
+          Auto-send emails to attendees
+        %p
+          *Make sure auto-send is turned on. An email with selected attachments will be sent to the attendees automatically when 
+        %p
+          the button in iPad is checked (as shown in the Step 1 ).
+    .row
+      .col-md-6.side
+        .row
+          .col-sm-12
+            %h4
+              How it works
+        .row
+          .col-sm-3
+            %h4
+              Step 1
+          .col-sm-9
+            Check "Send email to attendee" on the RealtyMate app via iPad.
+            %span
+              
+        .row
+          .col-sm-12
+            =image_tag "ipad_email_setting.png"
+        .row
+          .col-sm-3
+            %h4
+              Step 2
+          .col-sm-9
+            "Email Sent" will be displayed when it has been sent successfully.
+        .row
+          .col-sm-12
+            =image_tag "dashbboard.png"
+      .col-md-6.main-email
+        %table.table
+          %tr
+            %td
+              %h4
+                Edit auto-send email sample
+          %tr
+            %td.title
+              %p
+                %span
+                  *NOTE:
+                Please do NOT edit texts in the 
+                %span
+                  ”[   ]”, 
+              %p
+                e.g. 
+                %span
+                  [Property Address] will be auto-replaced by 
+                %span
+                  117 Wigram St
+                in email.
+          %tr
+            %td.subject
+              = hidden_field_tag :inspection_id, inspection.id
+              = hidden_field_tag :user_id, current_user.id
+              %span.subject_label
+                Subject
+              %span.subject_input
+                = text_field_tag :subject, subject, :size => 40
+          %tr
+            %td.message
+              = text_area_tag :body, body, :rows => 10, :class => "form-control input-sm"
+          %tr
+            %td.bottom
+              %span.attachment
+                .form-group
+                  = label_tag :Attachment
+                  = select_tag "property_files[]", options_for_select(inspection.property_files.split(','), selected_property_files), {:class => "form-control input-sm email_template_property_files", :multiple => "multiple", :inspection_id => inspection.id}
+          %tr        
+            %td
+              %span.attachment
+                .form-group
+                  %span.save.pull-right
+                    = submit_tag "Save Setting", :class => "btn btn-primary save-set", :onclick => "click_save_set(event)"
+                    %button{:class => "btn btn-default cancelbtn", :type => "button", :onclick => "cancel_colorbox()"}
+                      Cancel       
+              %span.ipad_notification{:inspection_id => inspection.id}                
+  .upload_attachment_form
+    %a.ipad_settings_upload_files{:href => "#upload_files_colorbox", :inspection_id=>inspection.id, :onclick => "ipad_settings_upload_files(event)"}
+      %i.fa.fa-plus.fa-lg{:inspection_id=>inspection.id}
+
+:javascript
+  // Trigger change event to init the select box 
+  $(document).bind('cbox_complete', function(){
+    $('#colorbox select#email_template_template_type').val('File Send');
+    $('span.notification').html('');
+    $('#colorbox select#email_template_template_type').trigger('change');
+  });
+
+  $('input[id="auto_send"]').attr({'data-size':'mini'}).bootstrapSwitch();
+
+

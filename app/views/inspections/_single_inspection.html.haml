@@ -1,0 +1,124 @@
+%td 
+  %table.table.inspection_item
+    %tr
+      %td.property_img_container
+        =render '/inspections/property_images', :ins => ins
+      %td.all_lines_td
+        .inspection_item_line1
+          %span.property_address
+            // Added editable.editable-click to make it look like being applied bootstrap editable styling after be created in Ajax way
+            %a.editable.editable-click{:href=>"#", :id=>"street_address_#{ins.id}", "data-type"=>"text", "data-pk"=>ins.id, "data-url"=>"/inspections/ajax_update.json"}
+              =ins.street_address
+            ,
+          %span.property_suburb
+            %a.editable.editable-click{:href=>"#", :id=>"suburb_state_postcode_#{ins.id}", "data-type"=>"typeaheadjs", "data-pk"=>ins.id, "data-url"=>"/inspections/ajax_update.json"}
+              = ins.suburb_state_postcode
+          / %i.fa.fa-pencil.fa-lg
+          %span.listing_website
+            / .btn-group
+            /   %a.btn.btn-default.list_url{:href => "#listing_site_colorbox", :inspection_id=>ins.id}
+            /     %i.fa.fa-link
+
+            %button#lstweb.btn.btn-default.dropdown-toggle.lstweb{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
+              %i.fa.fa-external-link.icon-blue
+            %ul.dropdown-menu.lstweb_ul{:role => "menu"}
+              %li{:role => "presentation"}
+                %a.inline.visit_site{:href => "#{ins.listing_url}", :target => "_blank", :role => "menuitem", :tabindex => "-1"}
+                  Visit listing website
+              %li{:role => "presentation"}
+                %a{:href=>"#", :id=>"_listing_url_#{ins.id}", "data-pk"=>ins.id, :onclick=>"edit_listing_website(event)"}
+                  Edit listing website
+                %a.hide{:href=>"#", :id=>"listing_url_#{ins.id}", "data-type"=>"url", "data-pk"=>ins.id, "data-url"=>"/inspections/ajax_update.json"}
+                  = ins.listing_url
+        .inspection_item_line2
+          %span.sale_status
+            .btn-group.files-btn-group
+              %button.btn.btn-default.inspection_status{:inspection_id => ins.id}
+                //%i.fa.fa-file-text-o
+                = ins.status
+              %button.btn.btn-default.dropdown-toggle.dropdown-toggle-icon{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button", :inspection_id => ins.id}
+                %i.dropdown-caret.fa.fa-caret-down
+              %ul.dropdown-menu#inspection_status{:role => "menu"}
+                - logger.debug "on_type: #{on_type}"
+                - Rails.application.config.on_types_info[on_type].each do |inspection_type|
+                  %li{:role => "presentation"}
+                    %a{:href=>"#", :inspection_id => ins.id, :onclick => "update_inspection_status(event)"}
+                      = inspection_type
+
+          %span.property_files
+            //%i.fa.fa-file-text-o.fa-lg
+            // ="#{ins.property_files.blank? ? 0 : ins.property_files.split(',').count} property files"
+          .btn-group.files-btn-group
+            %button.btn.btn-default.files_btn
+              //%i.fa.fa-file-text-o
+              %span.files_span
+                Files
+              = " ( #{ins.property_files.blank? ? 0 : ins.property_files.split(',').count} )"
+            %button.btn.btn-default.dropdown-toggle.dropdown-toggle-icon{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button", :inspection_id => ins.id}
+              %i.dropdown-caret.fa.fa-caret-down
+            %ul.dropdown-menu#select_property_files{:role => "menu"}
+              %li.upload_files{:role => "presentation"}
+                %a.ipad_settings_upload_files{:href => "#upload_files_colorbox", :inspection_id=>ins.id, :onclick => "ipad_settings_upload_files(event)"}
+                  Upload files
+
+              - ins.property_files.split(',').each do |property_file|
+                %li.select_property_files{:role => "presentation"}
+                  = label_tag property_file, property_file, title: property_file
+                  %a.download_property_file{:href=>ins.property_file_url(property_file), :target=>"blank"}
+                    %i.fa.fa-arrow-circle-o-down.download_property_file{:property_file_name => property_file, :inspection_id => ins.id}
+                  %i.fa.fa-times.delete_property_file{:property_file_name => property_file, :inspection_id => ins.id, :onclick => "delete_property_file(event)"}
+
+          %span.action_button
+          .btn-group
+            %button.btn.btn-default 
+              //%i.fa.fa-wrench
+              Action
+            %button.btn.btn-default.dropdown-toggle.dropdown-toggle-icon{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
+              %i.dropdown-caret.fa.fa-caret-down
+            %ul.dropdown-menu{:role => "menu"}
+              %li{:role => "presentation"}
+                %a.ipad_email_auto_setting.inline{:id => "ipad_email_auto_setting_#{ins.id}", :href => "#inline_ipad_email_auto_setting_#{ins.id}", :role => "menuitem", :tabindex => "-1", :inspection_id => ins.id}
+                  //%i.fa.fa-cog.fa-lg
+                  Auto-Send Settings
+                  //%i.fa.fa-cog
+                #inline_ipad.hide
+                  =render "/inspections/ipad_email_auto_setting", :inspection => ins
+              %li{:role => "presentation"}
+                //  %i.fa.fa-times.fa-lg
+                //= link_to "Delete".html_safe, ins, :method => :delete, :title => "Delete", remote: true, data: { confirm: "Are you sure?" }
+                %a{:href => "#", :rel => "nofollow", :title => "Delete", :inspection_id => ins.id, :onclick => "delete_inspection(event)"} Delete
+
+          / %span.action
+          /   %button#on_sale_types.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
+          /     Action
+          /     %span.caret
+          /   %ul.dropdown-menu{:role => "menu"}
+          /     %li{:role => "presentation"}
+          /       %a.ipad_email_auto_setting.inline{:id => "ipad_email_auto_setting_#{ins.id}", :href => "#inline_ipad_email_auto_setting_#{ins.id}", :role => "menuitem", :tabindex => "-1"}
+          /         %i.fa.fa-cog.fa-lg
+          /         Auto Email Setting
+          /       #inline_ipad.hide
+          /         =render "/inspections/ipad_email_auto_setting", :inspection => ins
+          /     %li{:role => "presentation"}
+          /       //  %i.fa.fa-times.fa-lg
+          /       = link_to "<i class='fa fa-times fa-lg'></i> Delete".html_safe, ins, :method => :delete, :title => "Delete", remote: true, data: { confirm: "Are you sure?" }
+        .inspection_item_line3
+          %span.last_update
+            ="Last inspection: #{display_date(ins.last_updated)}" unless ins.last_updated.blank?
+          %span.by
+            ="By #{ins.user.full_name}"
+          %span.profile_picture
+            =image_tag ins.user.profile_picture_url, :class => "avatar", :size => "40x40"
+        .inspection_item_line4{:inspection_id => ins.id}
+          = render '/inspections/inspection_lead_count_panel', :inspection => ins
+    %tr.spacer
+      %td{:colspan=>5}
+    %tr.hide{:id=>"inspection_leads_#{ins.id}"}
+      %td{:colspan=>2}
+        = render '/inspections/inspection_leads', :inspection => ins, :on_type => on_type
+
+%script
+  inspection_id = "#{ins.id}";
+
+
+

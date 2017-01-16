@@ -1,0 +1,6 @@
+.col-md-12
+  %table.table.inspections
+    %tbody
+      - inspections.each do |inspection| 
+        %tr.single_inspection{:inspection_id => inspection.id, :id => "single_inspection_#{inspection.id}"}
+          = render "/inspections/single_inspection", :ins => inspection, :on_type => on_type

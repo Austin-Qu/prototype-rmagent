@@ -1,0 +1,412 @@
+= stylesheet_link_tag "user_profile"
+.row
+  =render '/layouts/sidebar'
+  .main
+    .panel.panel-default.panel-account
+      .row
+        .col-sm-8.col-sm-offset-2.text-blue
+          %h3
+            Account
+          %hr
+          .row
+            .col-sm-4
+             
+          .row
+            .col-sm-12
+              %table.table.text-blue
+                %tr
+                  %td{:width=> "30%"}
+                    .profile_image
+                      =image_tag current_user.profile_picture_url, :class => "img-circle profile", :height => "80", :width => "80"
+                      %img{:src=>"/assets/hovermask_photo.png", :class => "img-circle mask", :height => "80", :width => "80"}
+                  %td
+                    .col-sm-8.profile_image_desc 
+                      Profile Photo
+                      %p
+                        Recommended Size: 480px x 480px
+                
+
+                / %tr
+                /   %td{:width=> "30%"}
+                /     .attr
+                /       %span.name
+                /         Account ID
+                /   %td
+                /     %span.value
+                /       //%a{:href=>"#", :id=>"account_id", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                /       // user id is now used as account_id
+                /       =current_user.id
+                %tr
+                  %td{:width=> "30%"}
+                    .attr
+                      %span.name
+                        Account Type
+                  %td
+                    .attr
+                      %span.value
+                        Free
+                        //%span.value
+                        // %a{:href=>"#", :id=>"account_type", "data-type"=>"select", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                        //  =current_user.account_type
+                %tr
+                  %td{:width=> "30%"}
+                    .attr
+                      %span.name
+                        Password
+                  %td
+                    %span.value
+                      %a.dropdown-toggle.reset_password{"data-toggle" => "dropdown", :href => "#"}
+                        Reset Password
+                      .dropdown-menu.dropdown-menu-md.dropdown-menu-right.reset_password
+                        .pad-all.bord-btm
+                          %p.text-lg.text-thin.mar-no 
+                            Change your password
+                        .nano.scrollable
+                          .nano-content
+                            = form_for(current_user, :url => { :action => "update_password", :controller => "users" }, :remote => true ) do |f|
+                              .field
+                                = f.label :current_password 
+                                %br/
+                                = f.password_field :current_password
+                              .field
+                                = f.label :password, "New password"
+                                %br/
+                                = f.password_field :password, :autocomplete => "off"
+                              .field
+                                = f.label :password_confirmation, "Confirm new password"
+                                %br/
+                                = f.password_field :password_confirmation
+                              .action_container
+                                = f.submit "Change Password", :class => "btn btn-default change_pwd_btn"
+                                = button_tag "Cancel", :type => 'button', :class => "btn btn-default cancel_pwd_btn"
+                                
+    .panel.panel-default.panel-personal
+      .row
+        .col-sm-8.col-sm-offset-2.text-blue
+          %h3
+            Personal Information
+          %hr
+          %table.table.text-blue
+            %tr
+              %td{:width=> "20%"}
+                .attr
+                  %span.name
+                    Job Title
+              %td
+                %span.value
+                  %a{:href=>"#", :id=>"title", "data-type"=>"select", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                    =current_user.title
+            %tr
+              %td{:width=> "20%"}
+                .attr
+                  %span.name
+                    First Name
+              %td
+                %span.value
+                  %a{:href=>"#", :id=>"first_name", "data-type"=>"text", "data-inputclass"=>"inputbox", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                    =current_user.first_name
+            %tr
+              %td{:width=> "20%"}
+                .attr
+                  %span.name
+                    Last Name
+              %td
+                %span.value
+                  %a{:href=>"#", :id=>"last_name", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                    =current_user.last_name
+            %tr
+              %td
+                .attr
+                  %span.name
+                    Mobile
+              %td{:colspan=>2}
+                %span.value
+                  %a{:href=>"#", :id=>"mobile", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                    =current_user.mobile
+            %tr
+              %td
+                .attr
+                  %span.name
+                    Business Email
+              %td{:colspan=>2, :class=>"biz_email"}
+                %span.value
+                  =current_user.email
+    .panel.panel-default.panel-bizinfo
+      .row
+        .col-sm-8.col-sm-offset-2.text-blue
+          %h3
+            Agency Information
+          %p.biz_desc
+            Please complete the following fields as it will be shown on your email signature.
+          %hr
+          .col-sm-6
+            %a#company_logo{:href=>'#'}
+              //- company_logo = current_user.company_logo.blank? ? 'upload_company_logo.png' : current_user.company_logo
+              =image_tag current_user.company_logo_url, :height => "41", :width => "220", :class => "company_logo"
+              .image_overlay
+                Upadte Image
+          .col-sm-6.agency_logo
+            Agency Logo
+            .logo-instruct
+              Recommended Size: 880px x 164px
+          %table.table.text-blue
+            %tr
+              %td.name
+                Agency Name
+              %td
+                %a{:href=>"#", :id=>"business_name", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                  =current_user.business_name
+            / %tr
+            /   %td.name
+            /     ACN
+            /   %td
+            /     %a{:href=>"#", :id=>"acn", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+            /       =current_user.acn
+            %tr
+              %td.name
+                ABN
+              %td
+                %a{:href=>"#", :id=>"abn", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                  =current_user.abn
+            %tr
+              %td.name
+                Address
+              %td
+                %a{:href=>"#", :id=>"address", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                  =current_user.address
+            %tr
+              %td.name
+                Suburb, State, Postcode
+              %td
+                %a{:href=>"#", :id=>"suburb_state_postcode", "data-type"=>"typeaheadjs", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                  =current_user.suburb_state_postcode
+            %tr
+              %td.name
+                Website
+              %td
+                %a{:href=>"#", :id=>"website", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                  =current_user.website
+            %tr
+              %td.name
+                Telephone
+              %td
+                %a{:href=>"#", :id=>"telephone", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                  =current_user.telephone
+            %tr
+              %td.name
+                Fax
+              %td
+                %a{:href=>"#", :id=>"fax", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                  =current_user.fax
+            %tr.country-tr
+              %td.name
+                Country
+              %td
+                %a{:href=>"#", :id=>"country", "data-type"=>"text", "data-pk"=>current_user.id, "data-url"=>"/user_profiles/ajax_update.json"}
+                  =current_user.country
+
+// File Upload
+%a#upload_user_profile_image.btn.btn-primary.upload_user_profile_image.inline.hide{:href => "#upload_user_profile_image_colorbox"}
+  #inline_upload_user_profile_image.hide
+    = render 'user_profiles/upload_user_profile'
+%a#upload_company_logo.btn.btn-primary.upload_company_logo.inline.hide{:href => "#upload_company_logo_colorbox"}
+  #inline_upload_company_logo.hide
+    = render 'user_profiles/upload_company_logo'
+
+%script
+  titles = [];
+  - Rails.application.config.common_titles.each do |t|
+    titles.push("#{t}");
+  account_types = [];
+  - Rails.application.config.user_account_types.each do |t|
+    account_types.push("#{t}");
+  user_id = "#{current_user.id}";
+
+:javascript
+  //turn to inline mode
+  $(document).ready(function() {
+    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.showbuttons = false;
+    $.fn.editable.defaults.ajaxOptions = {type: "GET"};
+    $.fn.editable.defaults.onblur = "submit";
+    $.fn.editable.defaults.success = function(response, newValue) {
+      if(response.status == 'error') return response.msg; //msg will be shown in editable form
+    };
+    $( "a#title" ).editable({
+      source: titles
+    });
+    $( "a#first_name" ).editable();
+    $( "a#last_name" ).editable();
+    $( "a#mobile" ).editable();
+    $( "a#account_id" ).editable();
+    $( "a#account_type" ).editable({
+      source: account_types
+    });
+    $( "a#business_name" ).editable();
+    // $( "a#acn" ).editable();
+    $( "a#abn" ).editable();
+    $( "a#website" ).editable();
+    $( "a#telephone" ).editable();
+    $( "a#fax" ).editable();
+    $( "a#address" ).editable();
+    $( "a#country" ).editable();
+
+    // locaitons is initialised in main.js
+    $( "a#suburb_state_postcode" ).editable({
+      //value:'Type here',
+      typeahead: ({
+        hint: false
+      },
+      {
+        displayKey: 'value',
+        source: locations.ttAdapter(),
+        prefetch: {url: '/locations/suburb_state_postcode.json'}
+      })
+    });
+    $( "a[id^='suburb_state_postcode']" ).on('save', function(e, params) {
+      if (params.response["updated?"] === false) {
+        // Set newValue to origal if submitValue is empty
+        params.newValue = params.response[$(this).attr("id")];
+      }
+    });
+
+    setInterval(function() {
+    if($('.editable-container .editable-inline').length) {
+      console.log($('.editable-container .editable-inline').length);
+      $('.table.text-blue tr td:nth-child(2)').css('border','2px solid #fff');
+    }}, 200);
+
+    // STOP reset password dropdown clicking to close
+    $('.dropdown-menu.reset_password').click(function(e) {
+        e.stopPropagation();
+    });
+
+    // color box for image upload
+    $("a.upload_user_profile_image.inline").colorbox({
+      inline:true,
+      width: "850px",
+      height: "400px",
+      overlayClose: false,
+      onClosed: function(event){
+        console.log('upload_image onclosed..');
+        console.log(event);
+        $.get("/user_profiles/get_user_profile.json?attribute_name=profile_picture&user_id=" + user_id, function(data){
+          console.log(data);
+          url = data.url;
+          $('.profile_image img.img-circle.profile').attr('src', url);
+          $('.user_side_bar_profile .image img.avatar').attr('src', url);
+        });
+      },
+      onOpen: function(event) {
+        console.log('upload profile image opening'); 
+        init_plupload_user_profile("profile_picture", user_id);
+      }
+    });
+
+    // color box for company logo
+    $("a.upload_company_logo.inline").colorbox({
+      inline:true,
+      width: "850px",
+      height: "400px",
+      overlayClose: false,
+      onClosed: function(event){
+        console.log('upload company logo onclosed..');
+        console.log(event);
+        $.get("/user_profiles/get_user_profile.json?attribute_name=company_logo&user_id=" + user_id, function(data){
+          console.log(data);
+          url = data.url;
+          $('#company_logo img.company_logo').attr('src', url);
+          $('.company_logo img').attr('src', url);
+        });
+      },
+      onOpen: function(event) {
+        console.log('upload company logo opening'); 
+        init_plupload_company_logo("company_logo", user_id);
+      }
+    });
+
+  });
+
+
+
+  // Upload profile picture
+  //$('.profile_image').click(function(event){
+    // Use jQuery.event.fix(event) to normalise event objects for cross browser support as e.preventDefault() is not supported by IE.
+  //  event = $.event.fix(event);
+  //  event.preventDefault();
+  //  $('input#profile_picture').click();
+  //});
+  //$('input#profile_picture').change(function(event) {
+  //  $('form.profile_picture_upload').submit();
+  //});
+  //$('a#profile_upload').addClass('hide');
+
+  // plupload
+  // upload user profile image
+  $('.profile_image .img-circle.mask').click(function(event){
+    console.log('clicked profile image');
+    // Use jQuery.event.fix(event) to normalise event objects for cross browser support as e.preventDefault() is not supported by IE.
+    event = $.event.fix(event); 
+    event.preventDefault();
+    console.log("click: update user profile image");
+    $('a.upload_user_profile_image.inline').click();
+  });
+  // upload user company logo
+  $('a#company_logo .image_overlay').click(function(event){
+    console.log('clicked company logo');
+    // Use jQuery.event.fix(event) to normalise event objects for cross browser support as e.preventDefault() is not supported by IE.
+    event = $.event.fix(event); 
+    event.preventDefault();
+    $('a.upload_company_logo.inline').click();
+  });
+
+
+  $('.profile_image img').on( "mouseover", function() {
+    $( this ).css( "display", "none" );
+    $('.profile_image img:nth-child(2)').css( "display", "inline" );
+  });
+  $('.profile_image img:nth-child(2)').mouseout(function(){
+    $( this ).css( "display", "none" );
+    $('.profile_image img:nth-child(1)').css( "display", "inline" );
+    //$(this).attr('src','<%= @current_user.profile_picture %>');
+  });
+
+  // Upload company logo
+  $('a#company_logo').click(function(event){
+    // Use jQuery.event.fix(event) to normalise event objects for cross browser support as e.preventDefault() is not supported by IE.
+    event = $.event.fix(event);
+    event.preventDefault();
+    $('input#company_logo').click();
+  });
+  $('input#company_logo').change(function(event) {
+    $('form.company_logo').submit();
+  });
+
+  // image overlay
+  $('img.company_logo').mouseover(function(){
+    console.log('show overlay');
+    $(this).next('.image_overlay').show();
+  }).mouseout(function (){
+    console.log('hide overlay');
+    $(this).next('.image_overlay').hide();
+  });
+  $('.image_overlay').mouseover(function(){
+    console.log('show overlay');
+    $(this).show();
+  }).mouseout(function (){
+    console.log('hide overlay');
+    $(this).hide();
+  });
+
+
+  //editable area effect, disabled for now
+  $('.main>.panel:nth-child(2)').mouseover(function() {
+    $(this).find('.editable-click, a.editable-click').parent().parent().css('border','2px solid #fff');
+  }).mouseout(function() {
+    $(this).find('.editable-click, a.editable-click').parent().parent().css('border','2px solid #fff');
+  });
+
+  $('button.cancel_pwd_btn').click(function(){
+    $('.dropdown-menu.reset_password form').reset();
+    $('.dropdown-toggle.reset_password').dropdown('toggle');
+  })

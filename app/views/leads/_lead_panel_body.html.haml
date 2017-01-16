@@ -1,0 +1,15 @@
+.tab-content
+  - if on_type == 'Buyer'
+    - buyer_class = 'active'
+    - renter_class = ''
+  - else
+    - buyer_class = ''
+    - renter_class = 'active'
+  - if on_type == 'Buyer'
+    #tab_for_buyer.tab_all_leads.tab-pane.fade.in{:class => buyer_class}
+      =render '/leads/all_leads', :leads => leads, :on_type => on_type
+    #tab_for_renter.tab_all_leads.tab-pane.in.fade{:class => renter_class}
+  - else
+    #tab_for_buyer.tab_all_leads.tab-pane.fade.in{:class => buyer_class}
+    #tab_for_renter.tab_all_leads.tab-pane.in.fade{:class => renter_class}
+      =render '/leads/all_leads', :leads => leads, :on_type => on_type

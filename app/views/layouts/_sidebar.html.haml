@@ -1,0 +1,96 @@
+= stylesheet_link_tag "sidebar"
+  
+.sidebar
+  .user_side_bar_profile
+    .image
+      %a{:href => user_profile_path(current_user)}
+        = image_tag current_user.profile_picture_url, :class => "avatar img-circle", :size => "90x90"
+    .name
+      = current_user.full_name
+    .stats
+      %span.inspections
+        / %span.glyphicon.glyphicon-tag.badge_account{"aria-hidden"=>"true", :style=>"color: yellow"}
+        = "#{current_user.inspections.where(:status => ['For Sale', 'For Lease']).count} listings"
+      %span.leads
+        = "#{current_user.leads.count} leads"
+      / %span.glyphicon.glyphicon-home.icon-color.badge_property{"aria-hidden"=>"true"} 
+      /   %span
+      /     4
+      / %span.glyphicon.glyphicon-user.icon-color.badge_crm{"aria-hidden"=>"true"}
+      /   %span
+      /     2
+  %a.company_logo{:href => "#{user_profile_path(current_user)}#company_logo"}
+    //- company_logo = current_user.company_logo.blank? ? "agenter_logo.png" : current_user.company_logo
+    =image_tag current_user.company_logo_url, :height => "41", :width => "220"
+
+  %ul.nav.nav-sidebar
+    %li.inspections.active
+      %a{:href => inspections_path} 
+        %i.fa.fa-list-alt
+        %span.h4.text-semibold
+          &nbsp;Listings
+    %li.leads
+      %a{:href => leads_path} 
+        %i.fa.fa-user
+        %span.h4.text-semibold
+          &nbsp;Leads
+    / %li
+    /   %a{:href => mates_index_path} 
+    /     %span.glyphicon.glyphicon-list-alt{"aria-hidden"=>"true"} 
+    /     %span.sub_menu_text
+    /       Mates
+
+
+/ .list-group
+/   / %a.list-group-item{:href => today_index_path} 
+/   /   %span.glyphicon.glyphicon-time{"aria-hidden"=>"true"} 
+/   /   &nbsp;Today 
+/   %a.list-group-item{:href => inspections_path}
+/     %span.glyphicon.glyphicon-home{"aria-hidden"=>"true"} 
+/     &nbsp;Inspections
+/   %a.list-group-item{:href => leads_path}
+/     %span.glyphicon.glyphicon-user{"aria-hidden"=>"true"} 
+/     &nbsp;Leads
+/   %a.list-group-item{:href => mates_index_path}
+/     %span.glyphicon.glyphicon-list-alt{"aria-hidden"=>"true"} 
+/     &nbsp;Mates
+
+:javascript
+  $( document ).ready(function() {
+    init_sidebar();
+    //$('.nav-sidebar>li.active').css('border-left-color','#E9EAED');
+  });
+
+  function init_sidebar(){
+    pathname = window.location.pathname;
+    if (pathname === "/")
+      side_menu_item = "inspections"
+    else
+      side_menu_item = pathname.split('/')[1];
+    $('ul.nav.nav-sidebar li').removeClass('active');
+    $("ul.nav.nav-sidebar li a[href='/" + side_menu_item + "']").parent().addClass('active');
+  }
+
+  // $('.nav-sidebar>.active>a').off('mouseover');
+
+  // $('.nav-sidebar li').not('.leads .active, .inspections .active').find('a').mouseover(function(e){
+  //   console.log("here");
+  //   tag = e.target;
+  //   console.log($(tag).parent());
+  //   $(tag).parent().css('border-left-color','#E9EAED');
+  // }).mouseout(function(e){
+  //   tag = e.target;
+  //   console.log($(tag).parent());
+  //   $(tag).parent().css('border-left-color','#005996');
+  // })
+
+  // $('.nav-sidebar li:not(.active)').mouseover(function(e){
+  //   console.log("here");
+  //   tag = e.target;
+  //   $(tag).css('border-left-color','#E9EAED');
+  // }).mouseout(function(e){
+  //   tag = e.target;
+  //   $(tag).css('border-left-color','#005996');
+  // })
+
+

@@ -1,0 +1,58 @@
+%div{:id=>"inline_lead_bulk_email"}
+  - body = Rails.application.config.lead_email_setting_bulk_email_signature.gsub("[AGENT NAME]", current_user.full_name).gsub("[AGENT EMAIL]", current_user.email).gsub("[AGENT MOBILE]", current_user.mobile).gsub("[AGENT COMPANY]", current_user.business_name)
+  = form_tag  "/leads/send_bulk_email", class: "nifty_form", multipart: true, :onsubmit=>"pre_submit(event)", :remote=>true do
+    %table.table
+      %tr
+        %td.title
+          %h4
+            Bulk Email
+      %tr
+        %td.recipients
+          %span.to
+            To
+          %span.recipients
+            = text_field_tag "recipients", nil, :size => 40, "data-provide" => "typeahead", :placeholder => 'Add recipient'
+      %tr
+        %td.subject
+          = hidden_field_tag :user_id, current_user.id
+          %span.subject_label
+            Subject
+          %span.subject_input
+            = text_field_tag :subject, nil, :size => 40
+          %span.templates
+            = select_tag :template_type, nil, {:class => "form-control input-sm hide", :onchange => "select_template_type(event)"}
+      %tr
+        %td.message
+          = text_area_tag :body, body, :rows => 10, :class => "form-control input-sm"
+      %tr
+        %td.bottom
+          %span.attachment
+            .form-group
+              //options_for_select([['Lisbon', 1], ['Madrid', 2], ...])
+              // - logger.debug "cookies: #{cookies[:attachment_name]}"
+              // - options = Array.new
+              // - unless cookies[:attachment_name].blank?
+              //   - options << [cookies[:attachment_name], cookies[:attachment_path]]
+              = label_tag :attachments
+              = select_tag "attachments[]", nil, {:class => "form-control input-sm bulk_email_files", :multiple => "multiple"}
+          %span.notification
+          %span.send
+            %button{:class => "btn btn-primary bulk-send", :type => "submit", :name => "commit"}
+              %i.fa.fa-paper-plane.email_sending
+              Send
+            //= submit_tag :send, :class => "btn btn-primary" 
+
+  .upload_attachment_form
+    %a.bulk_email_upload_files{:href => "#upload_files_colorbox", :onclick => "bulk_email_upload_files(event)"}
+      %i.fa.fa-plus.fa-lg
+         
+%script
+
+:javascript
+
+  function pre_submit(event) {
+    form = event.target;
+    $('i.email_sending').removeClass('fa-paper-plane').addClass('fa-spinner fa-pulse');
+    $('button.bulk-send').attr('disabled','disabled');
+    //$("a.bulk_email.inline").colorbox.close();
+  }

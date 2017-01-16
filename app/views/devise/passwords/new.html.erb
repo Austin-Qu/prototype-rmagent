@@ -1,0 +1,37 @@
+<%= stylesheet_link_tag "main" %>
+<%= stylesheet_link_tag "password" %>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<h2 class="text-blue find">To reset your password</h2>
+			<div class="pwd-dtl-line0"> Please enter the email address you used to sign up.</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-4 fgt-container">
+			<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+			  <%= devise_error_messages! %>
+
+			  <div class="field">
+			    <%= f.label :email%><br />
+			    <%= f.email_field :email, autofocus: true %>
+			  </div>
+
+			  <div class="actions">
+			    <%= f.submit "Continue" %>
+			  </div>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<script> 
+	$(document).ready(function(){
+		$('input[type="submit"]').addClass("btn btn-lg btn-primary btn-block btn-blue");
+		$('label').addClass("hide");
+	});
+</script>
+
+<%-# render "devise/shared/links" -%>

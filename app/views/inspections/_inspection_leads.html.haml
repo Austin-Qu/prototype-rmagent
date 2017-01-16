@@ -1,0 +1,55 @@
+.row.lead-head-row
+  = form_tag "/inspections/filter_inspection_leads", class: "filter_inspection_leads", inspection_id: inspection.id, remote: true do
+    = hidden_field_tag "inspection_id", inspection.id
+    = hidden_field_tag "on_type", on_type
+    .col-md-3
+      = select_tag "filter_type", options_for_select(Rails.application.config.leads_filter_types_info[on_type]), {:class => "form-control filter_type", :inspection_id => inspection.id, :onchange => "select_filter_type(event)"}
+    .col-md-3.datepk
+      .input-group
+        = text_field_tag "filter_date", nil, {:class => "form-control filter_date", :size=>"16", :disabled=>true, :inspection_id => inspection.id}
+        %span.input-group-addon
+          %i.fa.fa-calendar
+    = submit_tag "filter", :class => "hidden"
+
+  .col-md-9
+    = check_box_tag :auto_send_outside, 1, inspection.send_file, {:class => "auto_send_outside"}
+    %a.btn.btn-primary.ipad_email_auto_setting.inline{:href => "#inline_ipad_email_auto_setting_#{inspection.id}", :inspection_id=>inspection.id, :role => "menuitem", :tabindex => "-1"}
+      Auto-Send Settings
+      //%i.fa.fa-cog
+      //Auto Email Setting
+    //Invite
+    %a.btn.btn-primary.bulk_email.inline{:id => "bulk_email_#{inspection.id}", :inspection_id=>inspection.id, :href => "#inline_bulk_email_#{inspection.id}", :role => "menuitem", :tabindex => "-1"}
+      %i.fa.fa-paper-plane 
+      Send Email
+    %button#on_sale_types.btn.btn-primary.dropdown-toggle{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
+      %i.fa.fa-ellipsis-h
+    %ul.dropdown-menu{:rolbulk_email_contente => "menu"}
+      %li{:role => "presentation"}
+        %a.export_leads{:href => "#", :role => "menuitem", :tabindex => "-1", :onclick => "export_leads()"} Export
+      %li{:role => "presentation"}
+        %a#remove_inspection_leads{:href => "#", :role => "menuitem", :tabindex => "-1", :inspection_id => inspection.id, :onclick => "remove_inspection_leads(event)"} Remove       
+    .bulk_email_content.hide
+      =render "/inspections/bulk_email", :inspection => inspection
+
+.row.lead-body-row
+  .col-md-12
+    %table.table#all_leads.inspection_leads{:inspection_id => inspection.id}
+      = render '/inspections/inspection_leads_rows', {:inspection => inspection, :inspections_leads => inspection.inspections_leads, :on_type => on_type}
+
+:javascript
+  $(document).ready(function() {
+    //turn to inline mode
+    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.showbuttons = false;
+    $.fn.editable.defaults.onblur = "submit";
+    $.fn.editable.defaults.ajaxOptions = {type: "GET"};
+    $(document).ready(function() {
+      $( "a[id^='offer_price']" ).editable();
+      $( "a[id^='memo']" ).editable();
+    });
+
+
+  });
+
+
+

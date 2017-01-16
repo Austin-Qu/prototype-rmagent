@@ -1,0 +1,16 @@
+.counters.registers{:onclick => "click_to_filter_leads(event)", :filter_type => 'All'}
+  Attendees
+  %span{:filter_type => 'All'}
+    = inspection.inspections_leads.where(:last_follow_up_type => Rails.application.config.is_attendee_types).count
+.counters.potentials{:onclick => "click_to_filter_leads(event)", :filter_type => 'Rating'}
+  Rated
+  %span{:filter_type => 'Rating'}
+    = inspection.inspections_leads.where('rating > 0').count
+.counters.followup{:onclick => "click_to_filter_leads(event)", :filter_type => 'Follow-up'}
+  Follow-ups
+  %span{:filter_type => 'Follow-up'}
+    = inspection.inspections_leads.where(:last_follow_up_type => Rails.application.config.is_followed_up_types).count
+.pull-right.details
+  %a{:class=>"inspection_leads_#{inspection.id} inspection_leads_details", :inspection_id=>inspection.id, :href=>"#inspection_leads_#{inspection.id}", :onclick=>"detail_clk(event)"}
+    Details
+    %i.fa.fa-chevron-circle-right{ :onclick=>"update_fa(event)"}

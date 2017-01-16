@@ -1,0 +1,6 @@
+$("tr.single_inspection[inspection_id=<%= @inspection.id %>]").hide('slow', function(){ $(this).remove(); }); 
+// render side bar
+$("#sidebar").html("<%= escape_javascript(render partial: '/layouts/sidebar') %>");
+init_sidebar();
+// render panel heading
+$(".panel-heading.inspections").html("<%= escape_javascript(render partial: 'inspection_panel_heading', locals: {:on_type => @inspection.on_type}) %>");

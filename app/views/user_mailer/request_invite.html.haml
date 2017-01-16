@@ -1,0 +1,18 @@
+%p
+  = "#{@data["first_name"]} #{@data["last_name"]} has requested an invite. Details as below."
+%p
+  Email: 
+  = @data["email"]
+%p
+  Mobile:
+  = @data["mobile"]
+%p
+  Job title:
+  = @data["title"]
+%p
+  Company:
+  = @data["business_name"]
+%p
+  Click
+  %a{:href => @apply_uri} here
+  to apply for the client.

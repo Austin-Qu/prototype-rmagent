@@ -1,0 +1,8 @@
+// Update lead's followup status after sending email
+inspection_lead_ids = <%= @inspection_lead_ids.to_json %>;
+$.each(inspection_lead_ids, function(idx, inspection_lead_id){
+  $('.followup_type[inspection_lead_id=' + inspection_lead_id + ']').text('Email Sent');
+});
+$("a.bulk_email.inline").colorbox.close();
+// Send notification
+send_notification("<%= @notification_type %>", "<%= @message %>");

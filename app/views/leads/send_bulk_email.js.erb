@@ -1,0 +1,4 @@
+// Update lead's followup status after sending email
+$("a.bulk_email.inline").colorbox.close();
+// Send notification
+send_notification("<%= @notification_type %>", "<%= @message %>");

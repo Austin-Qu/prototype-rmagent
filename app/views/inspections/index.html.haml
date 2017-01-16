@@ -1,0 +1,28 @@
+= stylesheet_link_tag "inspections"
+= stylesheet_link_tag "leads"
+.current_on_type.hide{:on_type => @type}
+.row
+  #sidebar
+    =render '/layouts/sidebar'
+  .main
+    .panel.with-nav-tabs.panel-default
+      .panel-heading.inspections
+        =render '/inspections/inspection_panel_heading', :on_type => @type
+      .panel-body.inspections
+        =render '/inspections/inspection_panel_body', :on_type => @type, :inspections => @inspections
+
+// File Upload / Image Upload
+%a#upload_files.upload_files.inline.hide{:href => "#upload_files_colorbox"}
+  #inline_ipad.hide
+    = render '/inspections/upload_files'
+%a#upload_image.btn.btn-primary.upload_image.inline.hide{:href => "#upload_image_colorbox"}
+  #inline_upload_image.hide
+    = render '/inspections/upload_image'
+
+
+//Listing website Color box
+// %a.list_url.inline.hide{:href => "#listing_site_colorbox"}
+//   #inline_website.hide
+//     = render 'inspections/listing_website', :inspections => @inspections
+
+

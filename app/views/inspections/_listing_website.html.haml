@@ -1,0 +1,10 @@
+/ %div{:id => "listing_site_colorbox"}
+/ 	%p Listing Website
+/ 	- inspections.each do |ins|
+/ 		=form_tag('/inspections/ajax_update.json', method: :post) do
+/ 			= text_field_tag 'listing_url_#{ins.id}'
+/ 			%a.inline.visit_site{:href => "#{ins.listing_url}", :target => "_blank"}
+/ 				#{ins.listing_url}
+/ 			= submit_tag 'Confirm', :class => "btn btn-primary"
+/ 			%button{:class => "btn btn-default cancelbtn", :type => "button"}
+/ 				Cancel

@@ -1,0 +1,192 @@
+= stylesheet_link_tag "main"
+= stylesheet_link_tag "sign_up"
+.container
+  .row
+    .col-md-12.heading-center
+      / .h2.text-bold.text-black
+      /   - if params[:first_name].blank?
+      /     = "Hi,"
+      /   - else
+      /     = "Hi #{params[:first_name]},"
+      .h2.text-bold.text-blue Your invitation request was successful!
+      .h4.text-thin To begin using our products, please complete all required fields.
+    // =image_tag "sign_up_topimage.jpg"
+    /%h5 Australia's property business network tool
+    /%h4 Welcome to establish your own property network!
+    /%h5 Estater only serve property professinals;Valid user information and company email is reqiured. 
+    /%h2.form-signup-h4 Welcome to RealtyMate
+    /%h3.form-signup-h3 Create a new account
+
+  .row
+    .col-md-8.col-sm-8.sign_up_info
+      .logo
+      - resource.assign_attributes(params.permit(:email, :first_name, :last_name, :business_name, :title, :mobile, :verification_code))
+      = form_for(resource, as: resource_name, url: registration_path(resource_name), :html=>{:class => "form-horizontal", "data-toggle"=>"validator", :role=>"form"}) do |f|
+        = devise_error_messages!
+        .row
+          %hr
+            .col-sm-6
+              .form-group
+                = f.label :email, "Business Email", :class => "col-sm-3 control-label"
+                .col-sm-12
+                  = f.email_field :email, :class => "form-control input-sm", :required=>true, "data-error"=>"That email address is invalid"
+                  %span.help-block.with-errors
+            .col-sm-6
+              .form-group
+                = f.label :mobile, "Mobile", :class => "col-sm-3 control-label"
+                .col-sm-12
+                  = f.text_field :mobile, :class => "form-control input-sm", :required=>true
+        .row
+          .col-sm-6
+            .form-group
+              = f.label :first_name, :class => "col-sm-3 control-label"
+              .col-sm-12
+                = f.text_field :first_name, :class => "form-control input-sm", :required=>true
+          .col-sm-6
+            .form-group
+              = f.label :last_name, :class => "col-sm-3 control-label"
+              .col-sm-12
+                = f.text_field :last_name, :class => "form-control input-sm", :required=>true
+        .row
+          .col-sm-6
+            .form-group
+              = f.label :title, "Job Title", :class => "col-sm-3 control-label"
+              .col-sm-12
+                = f.select :title, Rails.application.config.common_titles, {:include_blank => true}, {:class => "form-control input-sm", :required=>true}
+          .col-sm-6
+            .form-group
+              = f.label :business_name, "Company", :class => "col-sm-3 control-label"
+              .col-sm-12
+                = f.text_field :business_name, :class => "form-control input-sm", :required=>true
+        .row
+          %hr
+            .col-sm-6
+              .form-group
+                = f.label :password, "Create a password", :class => "col-sm-3 control-label" 
+                .col-sm-12
+                  - if @validatable
+                    = f.password_field :password, autocomplete: "off", :class => "form-control input-sm", :placeholder => "Password", :required=>true
+                  - else
+                    = f.password_field :password, autocomplete: "off", :class => "form-control input-sm", :required=>true           
+            .col-sm-6
+              .form-group
+                = f.label :password_confirmation, "Confirm password", :class => "col-sm-3 control-label" 
+                .col-sm-12
+                  = f.password_field :password_confirmation, autocomplete: "off", :class => "form-control input-sm", :required=>true, :placeholder => "Re-type Password"
+                  %span.help-block.with-errors
+        .row
+          .col-sm-6
+            .form-group
+              = f.label :verification_code, "Invite Code", :class => "col-sm-3 control-label"
+              .col-sm-12
+                = f.text_field :verification_code, autofocus: true, :class => "form-control input-sm", :required=>true
+          .col-sm-6
+        .row
+          .col-sm-12
+          %hr
+            .form-group
+              .col-md-1
+                = check_box_tag 'agreed', nil, false, {:class => "col-sm-3 control-label", :required=>true, "data-error"=>"Before you wreck yourself", :style => ""}
+              .col-md-8
+                By creating a RealtyMate Account, I agree to RealtyMate's 
+                %a{:href=>privacy_path}
+                  Privacy Policy 
+                ,
+                %a{:href=>customer_terms_path}
+                  Customer Terms
+                ,
+                %a{:href=>website_terms_path}
+                  Conditions and Terms of Use
+                and
+                %a{:href=>statement_path}
+                  Personal Information Collection Statement
+                .help-block.with_errors
+              .col-md-3
+        .row
+          .col-sm-12
+            .form-group
+              .col-sm-12
+                .container.signup_btn
+                  = f.submit "Create Account", :class => "btn btn-primary btn-lg btn-block"
+
+:javascript
+  $('#user_password_confirmation').blur(function(){
+    console.log($('#user_password').val());
+    console.log($(this).val());
+    if($(this).val() != $('#user_password').val()) {
+      console.log($(this).parents('.form-group'));
+      $(this).parents('.form-group').removeClass('has-success').addClass('has-error');
+      $(this).next().text("Password not match");
+    }
+    else {
+      $(this).next().text("");
+    }
+
+  })
+
+
+        // .form-group
+        //   = f.label :acn, "ACN", :class => "col-sm-3 control-label"
+        //   .col-sm-9
+        //     = f.text_field :acn, :class => "form-control input-sm", :required=>true
+        // .form-group
+        //   = f.label :mobile, :class => "col-sm-3 control-label" 
+        //   .col-sm-9
+        //     = f.text_field :mobile, :class => "form-control input-sm", :required=>true
+        // .form-group
+        //   = f.label :postcode, :class => "col-sm-3 control-label"
+        //   .col-sm-9
+        //     = f.text_field :postcode, :class => "form-control input-sm", :required=>true
+        // .form-group
+        //   = f.label :state, :class => "col-sm-3 control-label"
+        //   .col-sm-9
+        //     = f.select :state, Rails.application.config.states.sort, {:include_blank => true}, {:class => "form-control input-sm", :required=>true}
+
+
+
+        // .form-group
+        //   = f.label :login_code
+        //   = f.text_field :login_code, autofocus: true, :class => "form-control"
+        // .form-group.activateion_code.hide
+        //   = label_tag "Enter code", nil, :class => "col-sm-3 control-label" 
+        //   .col-sm-9
+        //     .input-group
+        //       = text_field_tag :sms_code, nil, :class => "form-control input-sm", :placeholder => "Activation code sent to you mobile"
+        //       %span.input-group-addon
+        //         %a.activation_code Resend
+
+        // .form-group.sign_up
+
+        //.col-sm-4 
+        //
+          
+        //%h4 Want to learn more?
+        //%h5 
+        //  %a{:href=>"#"} See how Estater helps you work better
+  // = render "devise/shared/links"
+  // :javascript
+  //   $('a.activation_code').click(function(event){
+  //     console.log('clicked..');
+  //     event.preventDefault();
+  //     $('.activation_code').text('Resend the code');
+  //     $('.sign_up').removeClass('hide');
+  //     $.ajax({
+  //       url: "/messages/activation_code.json",
+  //     })
+  //       .done(function(data){
+  //         console.log(data);
+  //       });
+  //   });
+
+  // Check if the activation code has been sent
+  // $('form').submit(function(event){
+  //   console.log('debug');
+  //   if ($('.activateion_code').hasClass('hide')) {
+  //     $('.activateion_code').removeClass('hide');
+  //   }
+  // });
+
+//:javascript
+//   $(document).ready(function() {
+//     if ($('#agreed').checked ===)
+//  })

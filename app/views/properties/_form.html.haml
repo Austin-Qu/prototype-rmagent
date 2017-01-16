@@ -1,0 +1,154 @@
+.panel.with-nav-tabs.panel-default
+  .panel-heading
+    %ul.nav.nav-tabs
+      %li.active
+        %a{"data-toggle" => "tab", :href => "#property_highlight_tab"} Property Highlight
+      %li
+        %a{"data-toggle" => "tab", :href => "#developer_info_tab"} Developer Information
+      %li
+        %a{"data-toggle" => "tab", :href => "#file_tab"} File Download
+  .panel-body
+    .tab-content
+      #property_highlight_tab.tab-pane.fade.in.active        
+        = form_for(@property) do |f|
+          - if @property.errors.any?
+            #error_explanation
+              %h2
+                = pluralize(@property.errors.count, "error") 
+                prohibited this product from being saved:
+              %ul
+              - @property.errors.full_messages.each do |msg|
+                %li 
+                  = msg
+
+          %h4 Property Details        
+          %hr
+          .form-group
+            = f.label :street_address
+            = f.text_field :street_address, class: "form-control", :placeholder => "Property Address"
+          .form-group
+            .row
+              .col-md-6
+                = f.label :property_type
+                = f.select :property_type, options_for_select(Rails.application.config.property_types.sort), {:include_blank => false}, {:class => "form-control"}
+              .col-md-6
+                = f.label :sales_type
+                = f.select :sales_type, options_for_select(Rails.application.config.sales_types), {:include_blank => false}, {:class => "form-control"}
+          .form-group
+            .row
+              .col-md-4
+                = f.label :bedroom
+                = f.select :bedroom, options_for_select((0..10).to_a), {:include_blank => false}, {:class => "form-control"}
+              .col-md-4
+                = f.label :bathroom
+                = f.select :bathroom, options_for_select((0..10).to_a), {:include_blank => false}, {:class => "form-control"}
+              .col-md-4
+                = f.label :parking
+                = f.select :parking, options_for_select((0..10).to_a), {:include_blank => false}, {:class => "form-control"}
+          .form-group
+            .row
+              .col-md-6
+                = f.label :price
+                .input-group
+                  %span.input-group-addon 
+                    %span.glyphicon.glyphicon-usd{"aria-hidden"=>"true"}
+                  = f.text_field :price, class: "form-control", :placeholder => "Property Price"
+                  %span.input-group-addon .00
+              .col-md-6
+                = f.label :date
+                .input-group
+                  %span.input-group-addon 
+                    %span.glyphicon.glyphicon-time{"aria-hidden"=>"true"}
+                  = f.text_field :property_date, class: "form-control datepicker", :placeholder => "List date"
+          .form-group
+            .row
+              .col-md-6
+                = f.label :floor_area
+                .input-group
+                  = f.text_field :floor_area, class: "form-control", :placeholder => "Floor area"
+                  %span.input-group-addon
+                    m
+                    %sup 2
+              .col-md-6
+                = f.label :land_area
+                .input-group
+                  = f.text_field :land_area, class: "form-control", :placeholder => "Land area"
+                  %span.input-group-addon
+                    m
+                    %sup 2
+          %br
+          %h4 Property Description
+          %hr
+          .form-group
+            = f.label :headline
+            = f.text_field :headline, class: "form-control", :placeholder => "Headline"
+          .form-group
+            = f.label :description
+            = f.text_area :description, class: "form-control", :placeholder => "Describe the property"
+          .form-group
+            = f.label :features
+            = f.text_area :features, class: "form-control", :placeholder => "Features"
+          .form-group
+            = f.label :finishes
+            = f.text_field :finishes, class: "form-control", :placeholder => "Finishes"
+          .form-group
+            = f.label :fee
+            = f.text_field :fee, class: "form-control", :placeholder => "Fee"
+          .form-group
+            = f.label "Q&A"
+            = f.text_area :q_and_a, class: "form-control", :placeholder => "Q&A"
+          .form-group
+            = f.label :note
+            = f.text_area :note, class: "form-control", :placeholder => "Note"
+          = button_tag "Save", :class => "btn btn-primary"
+      #developer_info_tab.tab-pane.fade
+        - developer = @property.developer
+        - developer = Developer.new if developer.blank?
+        = form_for(developer) do |f|
+          - if developer.errors.any?
+            #error_explanation
+              %h2
+                = pluralize(developer.errors.count, "error") 
+                prohibited this product from being saved:
+              %ul
+              - developer.errors.full_messages.each do |msg|
+                %li 
+                  = msg
+
+          %h4 Developer Details        
+          %hr
+          .form-group
+            = hidden_field_tag 'property_id', @property.id
+          .form-group
+            = f.label :company
+            = f.text_field :company, class: "form-control", :placeholder => "Company"
+          .form-group
+            = f.label :contact
+            = f.text_field :contact, class: "form-control", :placeholder => "Contact"
+          .form-group
+            = f.label :title, :class => "control-label"
+            = f.select :title, Rails.application.config.common_titles, {:include_blank => true}, {:class => "form-control input-sm"}
+          .form-group
+            = f.label :phone
+            = f.text_field :phone, class: "form-control", :placeholder => "Phone"
+          .form-group
+            = f.label :website
+            = f.text_field :website, class: "form-control", :placeholder => "Website"
+          .form-group
+            = f.label :display_address
+            = f.text_field :display_address, class: "form-control", :placeholder => "Display Address"
+
+          = button_tag "Save", :class => "btn btn-primary"
+      #file_tab.tab-pane.fade bbb
+
+
+
+:javascript
+  $( document ).ready(function() {
+    $(".datepicker").datepicker({
+      dateFormat: "dd/mm/yy"
+    });
+  });
+
+
+

@@ -1,0 +1,17 @@
+.tab-content
+  - if on_type == 'Sale'
+    - sale_class = 'active'
+    - lease_class = ''
+  - else
+    - sale_class = ''
+    - lease_class = 'active'
+  - if on_type == 'Sale'
+    #tab_for_sale.tab-pane.fade.in{:class => sale_class}
+      =render '/inspections/for_sale', :inspections => inspections, :type => on_type
+    #tab_for_lease.tab-pane.in.fade{:class => lease_class}
+      / =render 'for_lease', :inspections => @inspections.where(:on_type => 'Lease')
+  - else
+    #tab_for_sale.tab-pane.fade.in{:class => sale_class}
+      / =render 'for_sale', :inspections => @inspections.where(:on_type => 'Sale')
+    #tab_for_lease.tab-pane.in.fade{:class => lease_class}
+      =render '/inspections/for_sale', :inspections => inspections, :type => on_type

@@ -1,0 +1,14 @@
+Thanks for applying for RealyMate Inspection Tool account. Your verification code is 
+= @data[:verification_code]
+%br
+%br
+Please click the link below to finish the registration.
+= @apply_uri
+%br
+%br
+%br
+%br
+Thanks
+%br
+%br
+RealtyMate 

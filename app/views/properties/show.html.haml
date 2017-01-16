@@ -1,0 +1,40 @@
+.container
+  .row
+    .col-md-3
+      =render '/layouts/sidebar'
+    .col-md-9
+      %h1 Property Details
+      %dl.dl-horizontal
+        %dt Address
+        %dd
+          = @property.address
+        %dt Property type
+        %dd
+          = @property.property_type
+        %dt Bedroom
+        %dd
+          = @property.bedroom
+        %dt Bathroom
+        %dd
+          = @property.bathroom
+        %dt Parking
+        %dd
+          = @property.parking
+        %dt Price
+        %dd
+          = "$#{@property.price}"
+        %dt Sales type
+        %dd
+          = @property.sales_type
+        %dt Date
+        %dd
+          = @property.property_date
+        %dt Floor area
+        %dd
+          = @property.floor_area
+        %dt Land area
+        %dd
+          = @property.land_area
+        %dt Description
+        %dd
+          = @property.description

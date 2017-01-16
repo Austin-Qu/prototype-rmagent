@@ -1,0 +1,57 @@
+%table.table.table-striped#all_leads
+  %tr.all_leads_header
+    %th{}
+      = check_box_tag "select_all", 1, false, {:onchange => 'allSelected(event, this.checked)', :class =>'select_all', "data-placement" =>"bottom", "data-toggle" => "popover", "data-trigger" => "hover", "data-content" => "Select All"}
+    %th Lead
+    %th Visited Suburb(s)
+    %th Offer Range
+    %th Last Follow-up
+    %th Details
+  //= render 'create_lead'
+
+  - leads.each do |lead|
+    %tr{:class=>"lead_inspections_#{lead.id}"}
+      %td.leads
+        = check_box_tag "select_lead", 1, false, {:lead_id => lead.id, :class => 'select_lead', :email => lead.email, :onchange => 'selected(event, this.checked)'}
+      %td.personal
+        =image_tag lead.avatar, size: "40x40"
+        .user_profile.show
+          .firstname
+            %a{:href=>"#", :id=>"first_name_#{lead.id}", "data-type"=>"text", "data-pk"=>lead.id, "data-url"=>"/leads/ajax_update.json"}
+              = lead.first_name
+          .lastname
+            %a{:href=>"#", :id=>"last_name_#{lead.id}", "data-type"=>"text", "data-pk"=>lead.id, "data-url"=>"/leads/ajax_update.json"}
+              = lead.last_name
+          .telephone
+            %a{:href=>"#", :id=>"telephone_#{lead.id}", "data-type"=>"text", "data-pk"=>lead.id, "data-url"=>"/leads/ajax_update.json"}
+              = lead.telephone
+          .email
+            %img{:src => "/assets/email.png", :onclick => "show_email_text(event)"}
+            %span{}
+              = lead.email
+            /%i.fa.fa-envelope-o
+            %a{:href=>"#", :id=>"email_#{lead.id}", "data-type"=>"text", "data-pk"=>lead.id, "data-url"=>"/leads/ajax_update.json"}
+              = lead.email
+      %td.suburb
+        //= render '/layouts/rating', :rating => lead.rating, :inspection_lead_id => -1
+        = lead.visited_suburbs(on_type, current_user.id)
+      %td.offer-range
+        .col-md-12
+          = lead.offer_range(on_type, current_user.id)
+      %td.follow-action
+        - inspection_lead = lead.last_followup(on_type)
+        = render '/leads/followup_action', :inspection_lead => inspection_lead, :lead => lead
+      %td.detail
+        %a{:class=>"lead_inspections_#{lead.id}", :href=>"#lead_inspections_#{lead.id}"}
+          %i.fa.fa-chevron-circle-right{:onclick=>"update_fa(event)"}
+    %tr.hide{:id=>"lead_inspections_#{lead.id}"}
+      %td{:colspan=>6}
+        = render '/leads/lead_inspections', :lead => lead
+
+:javascript
+  // email popover
+  $(function () {
+    $('[data-toggle="popover"]').popover();
+  })
+
+

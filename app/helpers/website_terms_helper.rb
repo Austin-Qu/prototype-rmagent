@@ -1,0 +1,2 @@
+module WebsiteTermsHelper
+end

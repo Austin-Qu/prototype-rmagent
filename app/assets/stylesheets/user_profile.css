@@ -1,0 +1,284 @@
+div.profile, div.account {
+  padding: 10px 10px 10px 10px;
+}
+
+div.bizinfo {
+  background-color: #D3D8DC;
+  margin-left: 15px;
+}
+
+/*div.bizinfo {
+  margin: 10px 10px 10px 10px;
+}
+*/
+#container .table td {
+  border-top: 0px solid rgba(0,0,0,0.05);
+}
+
+.name {
+  font-weight: bold;
+}
+
+a#profile_upload {
+  text-decoration: underline;
+  color: #0095CC;
+}
+
+.image_overlay {
+  width: 220px;
+  height: 41px;
+  background-color: rgba(139, 147, 150, 0.41);
+  z-index: 999999;
+  /*opacity: 0.5;*/
+  position: relative;
+  bottom: 71px;
+  margin-bottom: -41px;
+  display: none;
+  text-align: center;
+  padding-top: 12px;
+  color: white;
+  font-weight: bold;
+}
+
+.account_table tbody tr:nth-child(3) {
+  display: none;
+}
+
+
+.col-md-6.profile.text-blue {
+  margin-left: 15px;
+}
+
+.col-sm-9.col-sm-offset-3 .panel:first-child {
+  padding-bottom: 20px;
+}
+
+.profile_image {
+  text-align: left;
+}
+
+.logo-instruct , .profile_image_desc {
+  color:#989898;
+}
+
+.profile_image_desc {
+  margin-left: -13px;
+  width: 240px;
+}
+
+.country-tr {
+  display: none;
+}
+
+.profile_image img:nth-child(2) {
+  display: none;
+}
+
+/* header logo fixed to left in dashboard */
+
+.navbar-brand {
+  position: inherit;
+  left:auto;
+}
+
+.navbar-header {
+  position: inherit;
+  left: auto;
+  margin: 5px 0px 5px 10px;
+}
+
+.brand-title {
+  margin-left: 0px;
+}
+
+/*.navbar-top-links>li>a {
+  height: 80px !important;
+}
+*/
+#dropdown-user>a>span {
+  display: none;
+}
+
+.editable, a.editable {
+  border-bottom: none;
+}
+
+.attr{
+  color: #151515;
+  width: 210px;
+}
+
+
+.table.text-blue .name  {
+  color: #151515;
+  width: 219px;
+}
+
+/*.logo-instruct{
+  margin-left: 0px;
+}*/
+
+.panel.panel-default{
+  width: 735px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main {
+  margin-left: 220px;
+  padding-top: 24px;
+}
+
+.main .panel:nth-child(2) {
+
+}
+
+.table.text-blue tr td:nth-child(2){
+  border: 2px solid #fff;
+}
+
+.inputbox {
+  width:259px;
+  height:36px;
+}
+
+/*Change password popup layout*/
+
+.dropdown-menu.reset_password {
+  height: 280px;
+  border: none;
+  margin: 0;
+}
+
+.dropdown-menu.reset_password div.pad-all.bord-btm {
+  background-color: #005996;
+  color:#ffffff !important;
+}
+
+.dropdown-menu.reset_password .nano-content {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.dropdown-menu.reset_password input[type="password"] {
+  width:100%;
+  margin-bottom: 10px;
+}
+
+.dropdown-menu.reset_password label {
+  color:#000000;
+  font-weight: 500;
+}
+
+.dropdown-menu.reset_password button,
+.dropdown-menu.reset_password input[type="submit"] {
+  height: 35px;
+  width: 45.0%;
+  font-size: 10px;
+}
+
+.cancel_pwd_btn:hover,
+.cancel_pwd_btn:active,
+.cancel_pwd_btn:focus,
+.change_pwd_btn:hover,
+.change_pwd_btn:active,
+.change_pwd_btn:focus {
+  background-color: #005996;
+  border-color: #cdd6e1;
+  color: #ffffff;
+}
+
+.dropdown-menu.reset_password .cancel_pwd_btn {
+  float:right;
+}
+
+.dropdown-menu.reset_password .field:nth-child(3) {
+  margin-top: 10px;
+}
+
+.dropdown-menu.reset_password .field,
+.dropdown-menu.reset_password .action_container{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.dropdown-menu.reset_password .action_container {
+  margin-top: 6px;
+}
+
+/*colorbox styling*/
+
+#cboxClose {
+  top:10px ;
+  right:5px;
+}
+
+#cboxTopLeft, #cboxTopCenter, #cboxTopRight, #cboxMiddleLeft, #cboxMiddleRight, 
+#cboxBottomLeft, #cboxBottomCenter, #cboxBottomRight{
+  display: none;
+}
+
+#cboxLoadedContent {
+  margin-bottom: 0px;
+}
+
+#cboxLoadedContent {
+  overflow: hidden !important;
+}
+
+.panel-account td:nth-child(1), .panel-personal td:nth-child(1), .panel-bizinfo td:nth-child(1),
+.panel-bizinfo .col-sm-6 {
+  padding-left: 0px !important;
+}
+
+.panel-account .col-sm-12 {
+  padding-left: 15px;
+}
+
+.biz_desc {
+  color: #989898;
+}
+
+.agency_logo {
+  color: #989898;
+}
+
+.tt-dropdown-menu {
+  width: 200%;
+}
+
+.panel-bizinfo td, .panel-account td, .panel-personal td{
+  height: 47px;
+}
+
+.panel-bizinfo td:nth-child(2) a, .panel-personal td:nth-child(2) a {
+  display: block;
+  width: 200px;
+  border: 1px solid #CCCCCC;
+  padding: 8px;
+}
+
+
+.panel-personal td:nth-child(1), .panel-bizinfo td:nth-child(1) {
+  padding-top: 17px;
+}
+
+.panel-bizinfo td:nth-child(2) .editable-input input, .panel-personal td:nth-child(2) .editable-input input {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 200px;
+}
+
+.biz_email {
+  padding-top: 16px !important;
+}
+
+.reset_password {
+  text-decoration: underline;
+}
+
+.tt-hint {
+  display: none !important;
+}
+

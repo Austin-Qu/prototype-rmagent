@@ -1,0 +1,233 @@
+= stylesheet_link_tag "landing/animate.css"
+= stylesheet_link_tag "landing/icon.css"
+= stylesheet_link_tag "landing/font.css"
+= stylesheet_link_tag "landing/app.css"
+= stylesheet_link_tag "landing/landing.css"
+
+/ header
+%header#header.navbar.navbar-fixed-top.bg-primary.dk{"data-offset-top" => "1", "data-spy" => "affix"}
+  .container
+    .navbar-header
+      %a.navbar-brand.m-r-lg{:href => "#"}
+        %img.m-r-sm{:src => "/assets/landing/logo_white.png"}/
+        %span.text-lt2{:style => "letter-spacing:-1.1px;"} Realty
+        %span.text-lt3{"style:" => ""} Mate
+      %button.btn.btn-primary.btn-emtpy.visible-xs{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+        %i.fa.fa-bars
+    .collapse.navbar-collapse
+      %ul.nav.navbar-nav
+        %li
+          %a.active{"data-ride" => "scroll", :href => "#what"} What
+        %li
+          %a{"data-ride" => "scroll", :href => "#howitworks"} How
+        %li
+          %a{"data-ride" => "scroll", :href => "#features"} Ipad
+        %li
+          %a{"data-ride" => "scroll", :href => "#pro"} DashBorad
+        %li
+          %a{"data-ride" => "scroll", :href => "#footer"} Price
+      %ul.nav.navbar-nav.navbar-right
+        %li
+          .m-t-sm
+            %a.btn.btn-sm.btn-success.btn-rounded.m-l{:href => "#footer" }
+              %strong Sign Up
+            %a.btn.btn-sm.btn-primary.btn-rounded.m-l{:href => new_user_session_path } Sign In
+/ / header
+#content
+  #what.bg-primary.dk.intro
+    / Video Section
+    %section.content-section.video-section
+      .pattern-overlay
+        %a#bgndVideo.player{"data-property" => "{videoURL:'https://www.youtube.com/watch?v=aTKK4sRpCvo',containment:'.video-section', quality:'large', autoPlay:true, mute:true, opacity:1}"} bg
+        .container
+          .row
+            .col-md-10.col-md-offset-1.text-center
+              .m-t-xl.m-b-xl.padder
+                .carousel.slide.carousel-fade.inline.auto{"data-interval" => "6000"}
+                  .carousel-inner
+                    .item.active
+                      .h2.text-white.font-thin.l-h-2x.video-title Simple. Secure. Free.
+                  .h1.text-white.font-thin.l-h-2x{:style => "line-height:30px; margin-top:50px;"}
+                    The ultimate open inspection and CRM tool.
+                    / = succeed "and" do
+                    /   %br/
+                    / = succeed "online office" do
+                    /   %br/
+              %p.text-center.m-b-xl
+                / %a.btn.b-2x.btn-lg.b-white.btn-default.btn-rounded.m-sm.temp-disabled{:href => users_apply_now_path} Apply for Free
+                / a href="index.html" target="_blank" class="btn btn-lg btn-white b-2x b-white btn-rounded bg-empty m-sm">Live Preview</a
+        / Video Section Ends Here
+        .row
+          .col-md-6.col-md-offset-3.text-center
+            .m-t-xl.m-b-xl.padder
+              .h4.text-white.font-thin.l-h-2x{:style => "\r\n    color: #ffffff; font-size:30px;"}
+                
+                /
+                  Manage open inspection & leads,find your prospective buyers and<br>
+                  collaborate with your colleagues
+  #howitworks.bg-white-only
+    .container
+      .m-t-xl.m-b-xl.text-center.wrapper
+        %h3.text-u-c.text-dark
+          Streamline the Open Inspection process from start to finish.
+          / No more paper-work, No more writing and typing
+          / %br/
+          / No more repeating emails
+        /%p.text-muted Helping real estate agent eliminate one more piece of paper from the desks.
+
+      .row.m-t-xl.m-b-xl.text-center
+        .col-sm-4{"data-animation" => "fadeInLeft", "data-delay" => "300", "data-ride" => "animated"}
+          %p.h3.m-b-lg
+            %img{:src => "/assets/inspectionapp.png"}
+          %div
+            %h4.m-t-none RealtyMate - Open Inspection App
+            %p.text-muted.m-t-lg The essential app for customer registration and follow-up. Automatically syncs with Web Dashboard and online database.
+        .col-sm-4{"data-animation" => "fadeInLeft", "data-delay" => "600", "data-ride" => "animated"}
+          %p.h3.m-b-lg
+            %img{:src => "/assets/webdashboard.png"}
+          %div
+            %h4.m-t-none Web Dashboard
+            %p.text-muted.m-t-lg A dedicated web dashboard to manage listings, leads, follow-up activities and more.
+        .col-sm-4{"data-animation" => "fadeInLeft", "data-delay" => "900", "data-ride" => "animated"}
+          %p.h3.m-b-lg
+            %img{:src => "/assets/securitycloud.png"}
+          %div
+            %h4.m-t-none Secure Cloud Server
+            %p.text-muted.m-t-lg At RealtyMate, we are committed to protecting the privacy and security of your data through the best security practices and industry standards. 
+      .m-t-xl.m-b-xl.text-center.wrapper
+        %p.h5
+          / You can use it to help you
+          / = succeed "," do
+          /   %span.text-primary Register&Manage leads
+          / = succeed "," do
+          /   %span.text-primary Send Bulk Mail
+          / = succeed "..." do
+          /   %span.text-primary Find propesct buyers
+        / %p.m-t-xl
+        /   %a.btn.btn-lg.btn-white.b-2x.b-dark.btn-rounded.bg-empty.m-sm{"data-ride" => "scroll", :href => "#testimonial"} What Clients Said
+  #features.bg-light
+    .container
+      .row.m-t-xl.m-b-xl
+        .col-sm-6{"data-animation" => "fadeInLeft", "data-delay" => "300", "data-ride" => "animated"}
+          .phone-img#ipad
+            %img.img-responsive{:src => "/assets/ipad_screenshot1.png"}
+        .col-sm-6.wrapper-xl
+          %h3.text-dark.text-u-c
+            Quick and easy iPad app for efficient open inspections.
+          %ul.list-unstyled.m-t-xl#ipad
+            %li{"data-animation" => "fadeInUp", "data-delay" => "300", "data-ride" => "animated"}
+              %img{:src =>"/assets/landing/icon_ipad_feature1_o.png", "image" => "/assets/ipad_screenshot1.png", :onmouseenter => 'iconHover(event)'}
+              %p
+                Register attendees on site.
+            %li{"data-animation" => "fadeInUp", "data-delay" => "300", "data-ride" => "animated"}
+              %img{:src =>"/assets/landing/icon_ipad_feature2_o.png", "image" => "/assets/ipad_screenshot2.png", :onmouseenter => 'iconHover(event)'}
+              %p
+                Follow-up attendees on site.
+            %li{"data-animation" => "fadeInUp", "data-delay" => "300", "data-ride" => "animated"}
+              %img{:src =>"/assets/landing/icon_ipad_feature3_o.png", "image" => "/assets/ipad_screenshot3.png", :onmouseenter => 'iconHover(event)'}
+              %p
+                Automatically sync all data to secure web dashboard.
+  #pro.bg-dark
+    .container
+      .row.m-t-xl.m-b-xl
+        .col-sm-6.col-sm-push-6{"data-animation" => "fadeInLeft", "data-delay" => "300", "data-ride" => "animated"}
+          .phone-img#ipad_down
+            %img.img-responsive{:src => "/assets/dashboard.png"}/
+        .col-sm-6.col-sm-pull-6.wrapper-xl
+          %h3.text-lt.text-u-c
+            Clever and intuitive web dashboard to manage your customers.
+          %ul.list-unstyled.m-t-xl#webdashboard
+            %li{"data-animation" => "fadeInUp", "data-delay" => "600", "data-ride" => "animated"}
+              %img{:src =>"/assets/landing/icon_web_feature1_o.png", :onmouseenter => 'iconHover(event)'}
+              %p
+                Auto-send personalised bulk emails with attachments.
+            %li{"data-animation" => "fadeInUp", "data-delay" => "900", "data-ride" => "animated"}        
+              %img{:src =>"/assets/landing/icon_web_feature2_o.png", :onmouseenter => 'iconHover(event)'}
+              %p
+                Organise and manage your leads and listings.
+            %li{"data-animation" => "fadeInUp", "data-delay" => "1100", "data-ride" => "animated"}
+              %img{:src =>"/assets/landing/icon_web_feature3_o.png", :onmouseenter => 'iconHover(event)'}
+              %p
+                Record follow-up activities and more.
+  / #testimonial.bg-success.dker.clearfix
+  /   .container.m-t-xl.m-b-xl
+  /     #b-slide.carousel.auto.slide.clearfix{"data-interval" => "6000"}
+  /       %ol.carousel-indicators
+  /         %li{"data-slide-to" => "0", "data-target" => "#b-slide"}
+  /         %li.active{"data-slide-to" => "1", "data-target" => "#b-slide"}
+  /         %li{"data-slide-to" => "2", "data-target" => "#b-slide"}
+  /       .carousel-inner.text-center.m-t-xl.m-b-xl
+  /         .item.active
+  /           .row
+  /             .col-sm-6.col-sm-offset-3.m-b-xl
+  /               %h4.font-thin.l-h-2x.text-white.m-b-lg
+  /                 %em “Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat. Phasellus at dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibul ultricies neque, quis malesuada augue. Donec eleifend condimentum.”
+  /               %p.text-muted - Suzanne Oliver, Chief Learning Officer
+
+  /         / footer
+  %footer#footer.bg-dark
+    .dk
+      .container
+        .row.m-t-xl.m-b-xl
+          / .col-sm-4
+          /   %h4.text-u-c.m-b.font-thin.text-lt
+          /     / %span.b-b.b-dark Call 
+          /     / Us
+          /   %p.text-sm
+          /     / 1300 XXX XXX        
+          .col-sm-12
+            %h1.text-center.text-white
+              FREE
+            %h4.text-u-c.m-b.font-thin.text-lt
+              %span.b-dark The RealtyMate app and Web Dashboard is free to use. We are currently accepting users on an invite-only basis.
+            %p.text-sm
+              %a{:href => "invite", :class => "btn btn-primary"} Request an invitation today
+          / .col-sm-4
+          /   %h4.text-u-c.m-b.font-thin.text-lt
+          /     / %span.b-b.b-dark Join
+          /     / Us
+          /   %p.text-sm
+          /     / Send your resume to
+          /     / %br/
+          /     / %a{:href => "mailto:recruit@realtymate.com.au"} recruit@realtymate.com.au
+    .dker
+      .container
+        .row.m-t-xl.m-b-xl
+          .col-sm-6
+            RealtyMate Copyright © 
+            = Time.zone.now.year
+          .col-sm-6.text-right.text-left-xs
+            %span Follow us on
+            %a.btn.btn-icon.btn-rounded.btn-primary.m-l.m-r{:href => "https://www.facebook.com/realtymate"}
+              %i.fa.fa-facebook
+            %a.btn.btn-icon.btn-rounded.btn-info{:href => "https://twitter.com/Realtymate"}
+              %i.fa.fa-twitter
+
+// App js
+= javascript_include_tag "landing/app.js"
+= javascript_include_tag "landing/slimscroll/jquery.slimscroll.min.js"
+= javascript_include_tag "landing/appear/jquery.appear.js"
+= javascript_include_tag "landing/landing.js"
+= javascript_include_tag "landing/app.plugin.js"
+= javascript_include_tag "landing/jquery.mb.YTPlayer.js"
+
+:javascript
+  $(document).ready(function () {
+    $(".player").mb_YTPlayer();
+  });
+
+  $('ul#ipad li').click(function(event){
+    $('.phone-img#ipad img').fadeOut(1000, function() {
+      $('.phone-img#ipad img').attr('src', $(event.target).attr('image'));
+    }).fadeIn(1000);
+    return false;
+  });
+
+  function iconHover(event) {
+    newSrc = $(event.target).attr('src').replace('_o.png','.png');
+    $(event.target).attr('src',newSrc);
+  }
+
+
+
+

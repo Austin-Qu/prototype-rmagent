@@ -1,0 +1,188 @@
+= javascript_include_tag "for_sale"
+.row.tab-head-container
+  .col-md-12
+    = form_tag "/inspections/filter", class: "form-inline tab-head", remote: true do
+      .form-group
+        = hidden_field_tag :type, type
+        = label_tag "Status"
+        - options = Rails.application.config.on_types_info[type].dup
+        - options.insert(0, 'All') if options[0] != 'All'
+        = select_tag "status", options_for_select(options, params[:status]), {:class => "form-control", :onchange => "select_status()"}
+      = submit_tag "submit", class: "inspection_filter_submit hide"
+
+      %span.create_inspection{:id => 'accordion'}
+        = link_to "<img src='/assets/ajax-loader.gif' class='ajax-loader hide'/>&nbsp;<i class='fa fa-plus'></i>Create Listing".html_safe, "#", {:class => "button btn btn-primary create_inspection", :on_type => @type, onclick: "create_inspection(event)"}
+
+.row.tab-body-container.inspections
+  = render "/inspections/inspection_tab_body", :inspections => inspections, :on_type => type
+
+%script
+  on_types = [];
+  - on_types = Rails.application.config.on_types_info[type]
+  - on_types.each do |t|
+    on_types.push("#{t}");
+
+  user_id = "#{current_user.id}";
+  sale_type = "#{@type}";
+
+:javascript
+  $(document).ready(function() {
+    init_for_sale();
+  });
+
+  //change label images
+  function label_change() {  
+    $("a[id^='status_']").on('save',function(event, params){
+      console.log("gotcha");
+      tag = $(event.target);
+      inspection_id = tag.attr('data-pk');
+      d = new Date();
+      //tag = $(event.target).parents(".inspection_item");
+      //console.log(tag);
+
+      if (params.newValue == "For Sale")
+      {
+        $('img.property_image_label[inspection_id=' + inspection_id + ']').attr('src', '/assets/labels/for_sale.png?'+d.getTime());
+      }
+      if (params.newValue == "Sold")
+      {
+        $('img.property_image_label[inspection_id=' + inspection_id + ']').attr('src', '/assets/labels/sold.png?'+d.getTime());
+      }
+      if (params.newValue == "Disabled")
+      {
+        $('img.property_image_label[inspection_id=' + inspection_id + ']').attr('src', '/assets/labels/disabled.png?'+d.getTime());
+      }
+      if (params.newValue == "For Lease")
+      {
+        $('img.property_image_label[inspection_id=' + inspection_id + ']').attr('src', '/assets/labels/for_lease.png?'+d.getTime());
+      }
+      if (params.newValue == "Leased")
+      {
+        $('img.property_image_label[inspection_id=' + inspection_id + ']').attr('src', '/assets/labels/leased.png?'+d.getTime());
+      }    
+    });
+  }
+  //keep listing website in dropdown status
+  function keep_dropdown() {
+    $('.listing_website ul.dropdown-menu').click(function(e) {
+      e.stopPropagation();
+    });
+  }
+
+  function edit_listing_website(event){
+    // Use jQuery.event.fix(event) to normalise event objects for cross browser support as e.preventDefault() is not supported by IE.
+    event = $.event.fix(event);
+    event.preventDefault();
+    tag = $(event.target);
+    inspection_id = tag.attr('data-pk');
+    $("a#listing_url_" + inspection_id).trigger('click');
+  }
+
+  //display add website when listing website is empty
+  function check_empty_website() {
+    $('a.inline.visit_site').each(function(index, element){
+      if($(element).attr('href') =='') {
+        $(element).parent().parent().parent().find('#lstweb').html('<i class="fa fa-external-link"></i>');
+        $(element).addClass('not-active');
+      }
+    })
+  }
+
+  function status_icon_change() {
+  //change status icon when follow-up status changed
+    $(".followup_type").each(function(index, element){
+      switch ($.trim($(element).text()).toLowerCase()) {
+        case "phone call":
+          $(element).prevAll(".followup_icon").find('i').removeClass().addClass('fa fa-lg fa-phone');
+          break;
+        case "newly registered":
+          $(element).prevAll(".followup_icon").find('i').removeClass().addClass('fa fa-lg fa-tablet');
+          break;
+        case "ipad follow-up":
+          $(element).prevAll(".followup_icon").find('i').removeClass().addClass('fa fa-lg fa-check');
+          break;
+        case "email sent":
+          $(element).prevAll(".followup_icon").find('i').removeClass().addClass('fa fa-lg fa-envelope-o');
+          break;
+        case "email requested":
+          $(element).prevAll(".followup_icon").find('i').removeClass().addClass('fa fa-lg fa-files-o');
+          break;
+        case "sold":
+          $(element).prevAll(".followup_icon").find('i').removeClass().addClass('fa fa-lg fa-key');
+          break;
+        case "newly added":
+          $(element).prevAll(".followup_icon").find('i').removeClass().addClass('fa fa-lg fa-user-plus');
+          break;      
+      }
+    });
+  }
+
+  function update_fa(event) {
+    fa = event.target;
+    if ($(fa).hasClass('fa-chevron-circle-down')) {
+      $(fa).removeClass('fa-chevron-circle-down');
+      $(fa).addClass('fa-chevron-circle-right');
+      $(fa).closest('tr').removeClass('lead_expand');
+    } else {
+      $(fa).removeClass('fa-chevron-circle-right');
+      $(fa).addClass('fa-chevron-circle-down');
+      $(fa).closest('tr').addClass('lead_expand');
+    }
+    // toggle inspection_leads
+    toggle_tag($(fa).parent());
+  }
+
+  function toggle_tag(this_tag) {
+    id = this_tag.attr('href');
+    tag = $(id);
+    if (tag.hasClass('hide')) {
+      tag.removeClass('hide');
+      showAllEmailIcons(this_tag);
+    }
+    else
+      tag.addClass('hide');
+  }
+
+  function detail_clk(event) {
+    event.preventDefault();
+    var tag = event.target;
+    $(tag).find("i").click();
+  }
+
+  // Upload property file
+  // $('a.upload_property_file').click(function(event){
+  function upload_proerpty_file(event) {
+    event = $.event.fix(event);
+    event.preventDefault();
+    console.log(event.target);
+    // inspection_id = $(this).attr('inspection_id');
+    inspection_id = $(event.target).attr('inspection_id');
+    console.log("upload_property_file: " + inspection_id);
+    $('input.property_file_' + inspection_id).click();
+  }
+
+  // The following are enough to load once only. If loaded multiple times during ajax, duplicate event will be registered
+  $("a.bulk_email.inline").click(function(event){
+    console.log('in init.bulk_email.inline click');
+    console.log(event);
+    inspection_id = $(this).attr('inspection_id');
+    selected_leads = $('input.select_lead[inspection_id=' + inspection_id + ']:checked');
+    // alert if no leads being selected
+    if (selected_leads.length == 0) {
+      bootbox.alert('Please select attendee(s) before sending email.');
+      return false;
+    }
+  });
+
+  //Update visit listing website url
+  $("a[id^='listing_url_']").on('save', function(e, params){
+    console.log('listing_url on save');
+    tag = $(e.target);
+    inspection_id = tag.attr('data-pk');
+    new_url = params.newValue;
+    tag.parent().parent().find("a.visit_site").attr('href',new_url).removeClass('not-active');;
+    tag.parent().parent().parent().find("#lstweb").html('<i class="fa fa-external-link icon-blue"></i>');
+    check_empty_website();
+  });
+
+

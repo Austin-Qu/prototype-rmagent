@@ -1,0 +1,105 @@
+=stylesheet_link_tag 'header'
+%header#navbar
+  #navbar-container.boxed.navbar-fixed-top
+    / Brand logo & name
+    / ================================
+    .navbar-header
+      %a.navbar-brand{:href => user_signed_in? ? "/inspections" : "/"}
+        %img.brand-icon{:alt => "RealtyMate Logo", :src => "/assets/logo_white.png"}/
+        .brand-title
+          %span.brand-text.text-blue Realty
+          %span.brand-text-thin.text-blue.text-thin Mate
+    / ================================
+    / End brand logo & name
+    / Navbar Dropdown
+    / ================================
+    .navbar-content.clearfix
+      %ul.nav.navbar-top-links.pull-left
+        / Navigation toogle button
+        / ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        %li.tgl-menu-btn.hide
+          %a.mainnav-toggle{:href => "#"}
+            %i.fa.fa-navicon.fa-lg
+        / ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        / End Navigation toogle button
+
+      - if user_signed_in?
+        %ul.nav.navbar-top-links.pull-right
+          / Messages Dropdown
+          / ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          %li.dropdown
+            %a.dropdown-toggle.toggle-feedback{"data-toggle" => "dropdown", :href => "#"}
+              %i.fa.fa-comment
+              /%i.fa.fa-envelope.fa-lg
+            / Message dropdown menu
+            .dropdown-menu.dropdown-menu-md.dropdown-menu-right.contact_us
+              .pad-all.bord-btm.bg-blue
+                %p.text-lg.text-muted.text-bold.mar-no.text-white
+                  Feedback
+              .nano.scrollable
+                .nano-content
+                  .col-md-12
+                    .call
+                      Call 1300 XXX XXX or
+                    %form.contact{:action => "/messages/email"}
+                      = hidden_field_tag :name, current_user.full_name
+                      = hidden_field_tag :email, current_user.email
+                      .form-group.feedback-form
+                        / %label{:for => "message"} Message
+                        %textarea#message.form-control{:placeholder => "Please leave your message"}
+                      %button.btn.send.pull-right{:type => "submit"} Send
+                      %span.notification
+                      %br
+          / ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          / End message dropdown
+
+          / User dropdown
+          / ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          %li#dropdown-user.dropdown
+            %a.dropdown-toggle.text-right{"data-toggle" => "dropdown", :href => "#"}
+              %span.pull-right
+                = image_tag(current_user.profile_picture_url, size: "32x32", class: "img-circle img-user media-object")
+              .username.hidden-xs
+                = current_user.full_name
+                %i.fa.fa-chevron-down
+            .dropdown-menu.dropdown-menu-md.dropdown-menu-right.panel-default.logout-panel
+              / User dropdown menu
+              %ul.head-list
+                %li
+                  %a{:href => user_profile_path(current_user)}
+                    %i.fa.fa-user.fa-fw.fa-lg
+                    Profile
+                %li
+                  %a{:href => destroy_user_session_path, :method => :delete, :rel=>"nofollow", "data-method"=>"delete"}
+                    %i.fa.fa-sign-out.fa-fw.fa-lg
+                    Logout
+          / ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          / End user dropdown
+      / ================================
+      / End Navbar Dropdown
+
+:javascript
+  $('form.contact').submit(function(){
+    name = $('input#name').val();
+    email = $('input#email').val();
+    message = $('textarea#message').val();
+    $('button.send').text('Sending');
+    $.ajax({
+      url: "/messages/contact_form.json",
+      data: { user_name: name, user_email: email, message: message }
+    }).always(function(data) {
+      error_type = data["error_type"];
+      message = data["message"];
+      $('button.send').text('Send');
+      $('form.contact').reset();
+      $('.toggle-feedback').click();
+      send_notification(error_type, message);
+    })
+    return false;
+  });
+
+  $('.head-list li').mouseenter(function(){
+    $(this).find('i').css('color','#ffffff');
+  }).mouseleave(function(){
+    $(this).find('i').css('color','#515151');
+  })

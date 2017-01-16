@@ -1,0 +1,50 @@
+<%= stylesheet_link_tag "main" %>
+<%= stylesheet_link_tag "password" %>
+<div class="container">
+  <div class="row row-blue">
+    <div>
+      <h2 class="set-pwd">Set your new password</h2>
+      <div class="pwd-dtl-line1">You have successfully been identified.</div>
+      <div class="pwd-dtl-line2">Password must contain at least 8 characters and a special character.</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="rst-container">
+      
+
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+        <%= devise_error_messages! %>
+        <%= f.hidden_field :reset_password_token %>
+        <div class= "row">
+          <div class="field col-sm-3">
+            <%= f.label :password, "New Password" %>
+          </div>
+
+          <div class="col-sm-9">
+            <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field col-sm-3">
+            <%= f.label :password_confirmation, "Reconfirm" %>
+          </div>
+          <div class="col-sm-9">
+            <%= f.password_field :password_confirmation, autocomplete: "off" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="actions">
+            <%= f.submit "Reset Password" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script> 
+  $(document).ready(function(){
+    $('input[type="submit"]').addClass("btn btn-lg btn-primary btn-block btn-blue");
+  });
+</script>
+<%-# render "devise/shared/links" -%>

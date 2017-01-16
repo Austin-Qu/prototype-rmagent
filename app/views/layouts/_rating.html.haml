@@ -1,0 +1,6 @@
+.rating{:inspection_lead_id => inspection_lead_id, :current_rating => rating}
+  %i.fa.fa-star.5{:class => rating > 4 ? "rating_on" : "", :rating => 5, :onclick => "set_rating(event)"}
+  %i.fa.fa-star.4{:class => rating > 3 ? "rating_on" : "", :rating => 4, :onclick => "set_rating(event)"}
+  %i.fa.fa-star.3{:class => rating > 2 ? "rating_on" : "", :rating => 3, :onclick => "set_rating(event)"}
+  %i.fa.fa-star.2{:class => rating > 1 ? "rating_on" : "", :rating => 2, :onclick => "set_rating(event)"}
+  %i.fa.fa-star.1{:class => rating > 0 ? "rating_on" : "", :rating => 1, :onclick => "set_rating(event)"}

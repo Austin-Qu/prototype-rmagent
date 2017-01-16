@@ -1,0 +1,2 @@
+$(".sold_form[inspection_lead_id=<%= @inspection_lead.id %>]").addClass('hide');
+$("img.property_image_label[inspection_id=<%= @inspection.id %>]").attr('src', '/assets/labels/sold.png').attr('alt', 'Sold');

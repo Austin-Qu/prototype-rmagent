@@ -1,0 +1,87 @@
+%div{:id=>"inline_bulk_email_#{inspection.id}"}
+  // File Send default settings
+  - subject = Rails.application.config.email_setting_fs_subject.gsub('[ADDRESS]', inspection.get_full_address)
+  //- body = Rails.application.config.email_setting_file_send_body1 % [inspection.get_full_address, current_user.full_name, current_user.business_name, current_user.telephone, current_user.fax, current_user.mobile, current_user.website]
+  - body = Rails.application.config.email_setting_bulk_email_signature.gsub("[AGENT NAME]", current_user.full_name).gsub("[AGENT EMAIL]", current_user.email).gsub("[AGENT MOBILE]", current_user.mobile).gsub("[AGENT COMPANY]", current_user.business_name)
+  = form_tag  "/inspections/send_bulk_email", class: "nifty_form", multipart: true, :inspection_id=>inspection.id, :onsubmit=>"pre_submit(event)", :remote=>true do
+    %table.table
+      %tr
+        %td.title
+          %h4
+            Send Email
+      %tr
+        %td.recipients
+          %span.to
+            To
+          %span.recipients
+            = text_field_tag "recipients_#{inspection.id}", nil, :size => 40, "data-provider" => "typeahead", :inspection_id => inspection.id, :placeholder => 'Add recipient'
+      %tr
+        %td.subject
+          = hidden_field_tag :inspection_id, inspection.id
+          = hidden_field_tag :user_id, current_user.id
+          %span.subject_label
+            Subject
+          %span.subject_input
+            = text_field_tag :subject, subject, :size => 40
+          %span.templates
+            = select_tag :template_type, options_for_select(Rails.application.config.email_setting_select_types), {:class => "form-control input-sm hide", :onchange => "select_template_type(event)"}
+      %tr
+        %td.message
+          = text_area_tag :body, body, :rows => 10, :class => "form-control input-sm"
+      %tr
+        %td.bottom
+          %span.attachment
+            .form-group
+              = label_tag :attachments
+              = select_tag "property_files[]", options_for_select(inspection.property_files.split(','), inspection.property_files.split(',')), {:class => "form-control input-sm bulk_email_files", :multiple => "multiple", :inspection_id => inspection.id}
+          //%span.external_files
+          //  .form-group
+          //    = label_tag :upload_files
+          //    //= file_field_tag "upload_files[]", class: "multi maxsize-10240", :multiple=>true, :maxlength=>"10"
+          //    = file_field_tag "upload_files[]"
+          //    = file_field_tag "upload_files[]"
+          //    = file_field_tag "upload_files[]"
+          %span.notification
+          %span.send
+            %button{:class => "btn btn-primary bulk-send", :type => "submit", :name => "commit"}
+              %i.fa.fa-paper-plane.email_sending
+              Send
+            //= submit_tag :send, :class => "btn btn-primary" 
+
+  .upload_attachment_form
+    %a.bulk_email_upload_files{:href => "#upload_files_colorbox", :inspection_id=>inspection.id, :onclick => "bulk_email_upload_files(event)"}
+      %i.fa.fa-plus.fa-lg{:inspection_id=>inspection.id}
+
+            
+%script
+  inspection_id = "#{inspection.id}";
+  // email_settings = {"File Send": {'subject': "#{Rails.application.config.email_setting_file_send_subject}"}};
+  email_settings = {};
+  email_settings[""] = {};
+  email_settings[""]["subject"] = "";
+  email_settings[""]["body"] = "";
+  email_settings["File Send"] = {};
+  email_settings["File Send"]["subject"] = "#{Rails.application.config.email_setting_file_send_subject % inspection.street_address}";
+  email_settings["File Send"]["body"] = "";
+
+:javascript
+  // Trigger change event to init the select box 
+  $(document).bind('cbox_complete', function(){
+    $('#colorbox select#email_template_template_type').val('File Send');
+    $('span.notification').html('');
+    $('#colorbox select#email_template_template_type').trigger('change');
+  });
+
+  function select_template_type(event) {
+    selected_val = $('#colorbox select#email_template_template_type option:selected').val();
+    $('#colorbox input#email_template_subject').val(email_settings[selected_val]['subject']);
+    $('#colorbox textarea#email_template_body').val(email_settings[selected_val]['body']);
+  }
+
+  function pre_submit(event) {
+    form = event.target;
+    inspection_id = $(form).attr('inspection_id');
+    $('i.email_sending').removeClass('fa-paper-plane').addClass('fa-spinner fa-pulse');
+    $('button.bulk-send').attr('disabled','disabled');
+    //$("a.bulk_email.inline").colorbox.close();
+  }

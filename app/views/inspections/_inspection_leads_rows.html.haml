@@ -1,0 +1,97 @@
+%tr.all_leads_header
+  - logger.debug "** inspection: #{inspection.inspect}"
+  - logger.debug "** inspections_leads: #{inspections_leads.inspect}"
+  %th
+    = check_box_tag "select_all", 1, false, {:inspection_id => inspection.id, :class => "select_all", :onchange => 'allSelected(event, this.checked)', :onclick => "select_all(event)", "data-placement" =>"bottom", "data-toggle" => "popover", "data-trigger" => "hover", "data-content" => "Select All"}
+  %th Attendee
+  %th Rating
+  %th Offer
+  %th Memo
+  %th Last Follow-up
+- inspections_leads = inspections_leads.blank? ? Array.new : inspections_leads.order(last_follow_up: :desc)
+- inspections_leads.each do |inspection_lead| 
+  - lead = inspection_lead.lead
+  //%tr{:class=>"lead_inspections_#{lead.id}"}
+  %tr{:class=>"lead_inspections_#{lead.id}", :inspection_lead_id => inspection_lead.id}
+    %td.leads
+      = check_box_tag "select_lead", 1, false, {:inspection_id => inspection.id, :lead_id => lead.id, :class => "select_lead", :email => lead.email, :inspection_lead_id => inspection_lead.id, :onchange => 'selected(event, this.checked)'}
+    %td.personal_info
+      =image_tag lead.avatar, size: "40x40"
+      .user_profile.show
+        .name
+          = lead.name
+        .telephone
+          /%img{:src => "/assets/phone.png"}
+          %span
+            = lead.telephone
+        .email
+          /%img{:src => "/assets/email.png","data-container" => "body", "data-content" => lead.email, "data-placement" => "right", "data-toggle" => "popover"}
+          %img{:src => "/assets/email.png", :onclick => "show_email_text(event)"}
+          %span{}
+            = lead.email
+
+    %td.rating_info
+      = render '/layouts/rating', :rating => inspection_lead.rating, :inspection_lead_id => inspection_lead.id
+
+    %td.offer_info
+      .offer-col
+        %a{:href=>"#", :id=>"offer_price_#{inspection_lead.id}", "data-type"=>"text", "data-pk"=>inspection_lead.id, "data-url"=>"/inspections_leads/ajax_update.json"}
+          = "$#{inspection_lead.offer_price.to_i}"
+    %td.memo_info
+      %a{:href=>"#", :id=>"memo_#{inspection_lead.id}", "data-type"=>"text", "data-pk"=>inspection_lead.id, "data-url"=>"/inspections_leads/ajax_update.json"}
+        = inspection_lead.memo
+    %td.followup_info
+      //= render '/leads/followup_action', :inspection_lead => inspection_lead, :lead => lead
+      %span.followup_icon
+        %i.fa.fa-files-o.fa-lg
+      .followup_type{:inspection_lead_id => inspection_lead.id, :inspection_lead_type => inspection_lead.last_follow_up_type}
+        // = capitalize_first_letter(inspection_lead.last_follow_up_type)
+        = inspection_lead.last_follow_up_type
+      .followup_time{:inspection_lead_id => inspection_lead.id}
+        = capitalize_first_letter("#{time_ago_in_words(inspection_lead.last_follow_up)} ago")
+      %span.action.followup_action
+        %button#on_sale_types.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
+          %span.caret
+        %ul.dropdown-menu{:role => "menu"}
+          %li{:role => "presentation"}
+            // %a.just_called{:href => "#", :role => "menuitem", :tabindex => "-1"} Phone Call
+            = link_to "Phone Call", "/inspections_leads/ajax_update?name=last_follow_up_type&value=Phone Call&pk=#{inspection_lead.id}", :class => "just_called followup_action", :remote => true
+          %li{:role => "presentation"}
+            - logger.debug "on_type is ...: #{on_type}"
+            - follow_up_action = on_type == 'Sale' ? 'Sold' : 'Leased'
+            = link_to follow_up_action, "/inspections_leads/ajax_update?name=last_follow_up_type&value=#{follow_up_action}&pk=#{inspection_lead.id}", :class => "sold followup_action", :remote => true, :inspection_lead_id => inspection_lead.id
+      .sold_form.hide{:inspection_lead_id => inspection_lead.id}
+        = form_for inspection_lead, url: {action: "inspection_sold", controller: "inspections"}, :method => 'POST', :remote => true, html: {class: "form-horizontal"} do |f|
+          = hidden_field_tag :inspection_lead_id, inspection_lead.id
+          .form-group
+          //.col-sm-3
+          //  = label_tag :sold_price, nil, :class => "control-label"
+          //.col-sm-3
+          //  = text_field_tag :sold_price, nil, :class => "form-control input-sm"
+          // .form-group
+          //   .col-sm-3
+          //     = label_tag :lead, "Winner name", :class => "control-label"
+          //   .col-sm-3
+          //     = text_field_tag :lead, nil, :class => "form-control input-sm"
+          .form-group
+            .col-sm-6
+              = submit_tag "Save", :class => "btn btn-primary"
+%tr.collapse_tr
+  %td.collapse_td{:colspan => 6, :onclick => "collapse_attendees(event)"}
+    %i.fa.fa-minus-circle.fa-lg
+    Collapse
+
+- if inspections_leads.count == 0
+  %tr{:class=>"lead_placeholder"}
+    %td{:colspan => 6}
+      %h4
+        NO DATA
+      %img{:src => "assets/getstartednow.png" }
+
+:javascript
+  // email popover
+  $(function () {
+    $('[data-toggle="popover"]').popover();
+  })
+
+

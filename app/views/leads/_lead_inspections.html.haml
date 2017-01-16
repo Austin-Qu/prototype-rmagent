@@ -1,0 +1,43 @@
+%table.table.lead_inspections
+  %tr
+    %th &nbsp;
+    %th Attended Inspection
+    %th Memo
+    %th Offer
+    %th Last Follow-up
+    %th &nbsp;
+  - inspections = current_user.inspections
+  - inspection_ids = inspections.where(:on_type => Rails.application.config.on_type_mapping_leads_inspection[@type]).map{|t|t.id}
+  - lead.inspections_leads.where(:inspection_id => inspection_ids, ).order(last_follow_up: :desc).each do |lead_ins|
+    - ins = lead_ins.inspection
+    %tr.lead_inspections_tr
+      %td.placeholder_td_1
+        &nbsp;
+      %td.resource
+        .address
+          = "#{ins.street_address},"
+          %br
+          = "#{ins.suburb}, #{ins.state}, #{ins.postcode}"
+        = render '/layouts/rating', :rating => lead_ins.rating, :inspection_lead_id => lead_ins.id
+        .info
+          = "Attended at #{lead_ins.inspection_datetime.strftime('%l:%M%P %d/%b/%Y')}"
+      %td.memo
+        %a{:href=>"#", :id=>"memo_#{lead_ins.id}", "data-type"=>"text", "data-pk"=>lead_ins.id, "data-url"=>"/inspections_leads/ajax_update.json"}
+          = lead_ins.memo
+      %td.offer
+        %a{:href=>"#", :id=>"offer_price_#{lead_ins.id}", "data-type"=>"text", "data-pk"=>lead_ins.id, "data-url"=>"/inspections_leads/ajax_update.json"}
+          = "$#{lead_ins.offer_price.to_i}"
+      %td.followup_action
+        = render '/leads/followup_action', :inspection_lead => lead_ins, :lead => lead
+      %td.placeholder_td_2
+        &nbsp;
+:javascript
+  $(document).ready(function() {
+    //turn to inline mode
+    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.showbuttons = false;
+    $.fn.editable.defaults.onblur = "submit";
+    $.fn.editable.defaults.ajaxOptions = {type: "GET"};
+    //$( "a[id^='offer_price']" ).editable();
+    //$( "a[id^='memo']" ).editable();
+  });

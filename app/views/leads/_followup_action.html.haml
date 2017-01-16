@@ -1,0 +1,14 @@
+%span.followup_icon
+  %i{:class => followup_icon(inspection_lead.blank? ? nil : inspection_lead.last_follow_up_type )}
+- if inspection_lead.blank?
+  .followup_time
+    - lead_user = lead.leads_users.order(updated_at: :desc).first
+    = capitalize_first_letter("#{time_ago_in_words(lead_user.updated_at)} ago")
+  .followup_type
+    Newly Added  
+- else
+  .followup_time
+    = capitalize_first_letter("#{time_ago_in_words(inspection_lead.last_follow_up)} ago")
+  .followup_type{:inspection_lead_id => inspection_lead.id}
+    //= capitalize_first_letter(inspection_lead.last_follow_up_type)
+    = inspection_lead.last_follow_up_type

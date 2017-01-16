@@ -1,0 +1,71 @@
+.container
+  .row
+    .col-md-3
+      =render '/layouts/sidebar'
+    .col-md-9
+      .panel.with-nav-tabs.panel-default
+        .panel-heading
+          %ul.nav.nav-tabs
+            %li.active
+              %a{"data-toggle" => "tab", :href => "#tab1default"} My Stock
+            %li
+              %a{"data-toggle" => "tab", :href => "#tab2default"} Mate Property Market
+            %li
+              %a{"data-toggle" => "tab", :href => "#tab3default"} Public Property Market
+            %li.dropdown
+              %a{"data-toggle" => "dropdown", :href => "#"}
+                Customised Groups
+                %span.caret
+              %ul.dropdown-menu{:role => "menu"}
+                %li
+                  %a{"data-toggle" => "tab", :href => "#tab4default"} Favourite Properties
+                %li
+                  %a{"data-toggle" => "tab", :href => "#tab5default"} Archived Properties
+        .panel-body
+          .tab-content
+            = link_to new_property_path do 
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            #tab1default.tab-pane.fade.in.active
+              %table.table.table-striped
+                %thead
+                  %tr
+                    %th #
+                    %th Address
+                    %th Type
+                    %th Details
+                    %th Price
+                    %th Sales Type
+                    %th Date
+                    %th Area
+                    %th Action
+                %tbody
+                  - @properties.each_with_index do |p, idx| 
+                    %tr
+                      %td 
+                        = idx + 1
+                      %td 
+                        =p.address
+                      %td 
+                        =p.property_type
+                      %td
+                        = p.bedroom
+                      %td 
+                        =p.price
+                      %td 
+                        =p.sales_type
+                      %td 
+                        =p.property_date
+                      %td
+                        = p.floor_area
+                      %td.text-center
+                        %a.btn.btn-success.btn-xs{:href => property_path(p)}
+                          %span.glyphicon.glyphicon-list-alt
+                        %a.btn.btn-info.btn-xs{:href => edit_property_path(p)}
+                          %span.glyphicon.glyphicon-edit
+                        %a{:confirm=>"Are you sure?", :class=>"btn btn-xs btn-danger", :rel=>"nofollow", "data-method"=>"delete", :href=>property_path(p)}
+                          %span.glyphicon.glyphicon-remove
+
+            #tab2default.tab-pane.fade Mate Property Market
+            #tab3default.tab-pane.fade Public Property Market
+            #tab4default.tab-pane.fade Favourite Properties
+            #tab5default.tab-pane.fade Archived Properties

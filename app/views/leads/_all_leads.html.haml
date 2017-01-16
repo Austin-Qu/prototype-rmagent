@@ -1,0 +1,192 @@
+.row
+  //.col-md-4
+  //    = text_field_tag 'search', params[:search], {:class => "form-control", :placeholder => "Search"}
+  .col-md-4
+    =form_tag "/leads", method: "get", remote: true do
+      = hidden_field_tag :type, on_type
+      = select_tag "filter_type", options_for_select(Rails.application.config.leads_filter_types[on_type], params[:filter_type]), {:class => "form-control filternew"}
+      = submit_tag "submit", class: "lead_filter_submit hide"
+  .col-md-4.col-md-offset-4.lead_more_btn
+    %button#on_sale_types.btn.btn-primary.dropdown-toggle.moreactionleads{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
+      %i.fa.fa-ellipsis-h
+    %ul.dropdown-menu{:role => "menu"}
+      %li{:role => "presentation"}
+        %a.export_leads{:href => "#", :role => "menuitem", :tabindex => "-1", :onclick => "export_leads()"} Export
+      %li{:role => "presentation"}
+        %a#delete_leads{:href => "#", :role => "menuitem", :tabindex => "-1", :user_id => current_user.id} Delete
+    %a.btn.btn-primary.bulk_email.inline.pull-right{:id => "lead_bulk_email", :href => "#inline_lead_bulk_email", :role => "menuitem", :tabindex => "-1"}
+      %i.fa.fa-paper-plane 
+      Send Email
+
+.row.hide
+  .col-md-4
+    // hide for now
+    %span.hide 
+      %button#on_sale_types.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"} 
+        %i.fa.fa-plus
+        &nbsp;
+        New Lead
+        %span.caret
+      %ul.dropdown-menu{:role => "menu"}
+        %li{:role => "presentation"}
+          %a.new_lead{:role => "menuitem", :tabindex => "-1", :id => "new_lead", :href=>"#create_lead"} 
+            New Lead
+        %li{:role => "presentation"}
+          %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Import from Excel
+
+  .col-md-6
+  // hide for now
+  .col-md-2.hide
+    %button.btn.btn-primary
+      Send Email
+      &nbsp;
+      %i.fa.fa-envelope
+.row
+  .col-md-12.all_leads_rows
+    = render "/leads/all_leads_rows", :leads => leads, :on_type => on_type
+
+%script
+  on_type = "#{on_type}";
+
+:javascript
+  $(document).ready(function() {
+    //turn to inline mode
+    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.showbuttons = false;
+    $.fn.editable.defaults.onblur = "submit";
+    $.fn.editable.defaults.ajaxOptions = {type: "GET"};
+    $.fn.editable.defaults.success = function(response, newValue) {
+      if(response.status == 'error') return response.msg; //msg will be shown in editable form
+    };
+    $( "a[id^='first_name']" ).editable();
+    $( "a[id^='last_name']" ).editable();
+    //$( "a[id^='telephone']" ).editable();
+    //$( "a[id^='email']" ).editable();
+    //status_icon_change();
+  });
+
+  function update_fa(event) {
+    fa = event.target;
+    console.log(fa);
+    if ($(fa).hasClass('fa-chevron-circle-down')) {
+      $(fa).removeClass('fa-chevron-circle-down');
+      $(fa).addClass('fa-chevron-circle-right');
+      $(fa).closest('tr').removeClass('lead_expand');
+    } else {
+      $(fa).removeClass('fa-chevron-circle-right');
+      $(fa).addClass('fa-chevron-circle-down');
+      $(fa).closest('tr').addClass('lead_expand');
+    }
+  }
+
+  $('a.new_lead').click(function(event) {
+    // Use jQuery.event.fix(event) to normalise event objects for cross browser support as e.preventDefault() is not supported by IE.
+    event = $.event.fix(event);
+    event.preventDefault();
+    toggle_tag($(this));
+  });
+
+  $("a[class^='lead_inspections_']").click(function(event) {
+    // Use jQuery.event.fix(event) to normalise event objects for cross browser support as e.preventDefault() is not supported by IE.
+    event = $.event.fix(event);
+    event.preventDefault();
+    toggle_tag($(this));
+  });
+
+  function toggle_tag(this_tag) {
+    id = this_tag.attr('href');
+    tag = $(id);
+    if (tag.hasClass('hide'))
+      tag.removeClass('hide');
+    else
+      tag.addClass('hide');
+  }
+
+  $('a#delete_leads').on('click', function(){
+    console.log('delete leads...');
+    leads = $("input.select_lead[type='checkbox']:checked");
+    lead_ids = new Array();
+    $.each(leads, function(index, lead){
+      lead_ids.push($(lead).attr('lead_id'));
+    });
+    if (lead_ids.length === 0 ) {
+      bootbox.alert("Please select the lead(s) you want to delete.");
+      return;
+    }
+    bootbox.confirm("Are you sure you want to delete selected lead(s)?", function(result) {
+      if (result === false)
+        return;
+      $.ajax({
+        method: "POST",
+        async: false,
+        url: "/leads/delete_leads",
+        dataType: "script",
+        data: { lead_ids: lead_ids, on_type: on_type }
+      })
+        .done(function( msg ) {
+          send_notification('success', "Delete successful");
+        })
+        .fail(function( msg ) {
+          send_notification('error', "Delete failed");
+        });
+    });
+  });
+
+  $('select#filter_type').change(function(){
+    filter = $('select#filter_type').val();
+    $('input.lead_filter_submit').click();
+  })
+
+  $('input#select_all').change(function(event){
+    checked = event.target.checked;
+    $("input.select_lead").prop('checked', checked);
+  });
+
+  $('#filter_type').change(function(){
+    status_icon_change();
+  });
+
+
+
+  function status_icon_change() {
+    $("tr[class^='lead_inspections_'], .lead_inspections").each(function(index, element){
+      switch ($.trim($(element).find(".followup_type").text()).toLowerCase()) {
+        case "phone call":
+          $(element).find(".followup_icon i").removeClass().addClass('fa fa-lg fa-phone');
+          break;
+        case "newly registered":
+          $(element).find(".followup_icon i").removeClass().addClass('fa fa-lg fa-tablet');
+          break;
+        case "ipad follow-up":
+          $(element).find(".followup_icon i").removeClass().addClass('fa fa-lg fa-check');
+          break;
+        case "email sent":
+          $(element).find(".followup_icon i").removeClass().addClass('fa fa-lg fa-envelope-o');
+          break;
+        case "email requested":
+          $(element).find(".followup_icon i").removeClass().addClass('fa fa-lg fa-files-o');
+          break;
+        case "sold":
+          $(element).find(".followup_icon i").removeClass().addClass('fa fa-lg fa-key');
+          break;
+        case "newly added":
+          $(element).find(".followup_icon i").removeClass().addClass('fa fa-lg fa-user-plus');
+          break;      
+      }
+    });
+  }
+
+  //$('#tab_all_leads input#search').keyup(function(event){
+  //  if (event.keyCode == 13) {
+  //    // Detect Enter in input box
+  //    console.log('searched');
+  //    keyword = $(this).val();
+  //    $(this).closest('form').submit();
+  //  }
+  //});
+
+  //$('#tab_all_leads select#filter_type').change(function(event){
+  //  $(this).closest('form').submit();
+  //});
+
+

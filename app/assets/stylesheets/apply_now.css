@@ -1,0 +1,98 @@
+/*  for apply now */
+.apply_now_right_panel{
+  width: 500px;
+  margin-top: 30px;
+  text-align: center;
+  display: none;
+}
+
+body {
+  overflow: hidden;
+  padding-top:75px !important;
+  background-color: #ffffff;
+}
+
+.apply_now_right_panel_text{
+  width: 350px;
+}
+
+.col-centered{
+  float: none;  
+  margin: 0 auto;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.checkbox-align{
+  margin-left: 80%;
+}
+
+.vcenter {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
+
+.control-label {
+  width: 60%;
+}
+
+
+
+.signup_btn {
+  margin-top:20px;
+  width: 250px;
+  margin-left: auto !important;
+}
+
+select.input-sm ,.input-sm {
+  height: 45px;
+}
+
+label {
+  /*padding-left: 0 !important;*/
+}
+
+.col-sm-6 .form-group .col-md-11 {
+  font-size: 12px;
+}
+
+.h4.text-thin {
+  color: #989898; 
+  margin-top: 20px;
+  margin-bottom: -20px;
+}
+
+.h2.text-thin {
+  font-weight: 400;
+  margin-top:40px;
+}
+
+.signup_btn input{
+  background-color: #00509E !important;
+}
+
+a {
+  text-decoration: underline !important;
+  color:#00509E;
+}
+
+#container {
+  background-color: #ffffff;
+}
+
+@media screen and (max-width: 767px) {
+  .sign_up_info {
+    margin: 0 10%;
+  }
+}
+
+#upload_image {
+  visibility: hidden;
+}
+
+.error_message {
+  color: #a94442;
+}

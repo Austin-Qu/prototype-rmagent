@@ -1,0 +1,28 @@
+%tr#create_lead.hide
+  - lead = Lead.new
+  = form_for lead, html: {class: "nifty_form"} do |f|
+    %td
+      = check_box_tag "select", 1, false
+    %td.leads 
+      =image_tag "sample_property.jpg", size: "60x60"
+      = render '/layouts/rating', :rating => 0
+      .user_profile.add
+        .name
+          = f.text_field :name, {:placeholder=>"Name", :class=>"form-control input-sm"}
+        .telephone
+          = f.text_field :telephone, {:placeholder=>"Mobile Number", :class=>"form-control input-sm"}
+        .email
+          = f.text_field :email, {:placeholder=>"Email", :class=>"form-control input-sm"}
+        / .leads_files
+        /   = "0 Leads files"
+        .save
+          = f.submit "Save", :class => "btn btn-default"
+    %td.latest_action
+      %i.fa.fa-files-o
+      Newly Added
+    %td.action
+      %button#on_sale_types.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button", :disabled=>true}
+        Action
+        %span.caret
+    %td.details
+      %i.fa.fa-chevron-circle-right

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealtyMate</title>
+    <%= favicon_link_tag %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tags %>
+    <%= javascript_include_tag "jquery-2.1.1.min.js" %>
+    <%= stylesheet_link_tag "bootstrap.css" %>
+    <%= javascript_include_tag "bootstrap.js" %>
+    <%= javascript_include_tag "//code.jquery.com/ui/1.11.2/jquery-ui.js" %>
+    <%= stylesheet_link_tag    "//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" %>
+
+
+
+    <%= stylesheet_link_tag "bootstrap-tagsinput.css" %>
+    <%= javascript_include_tag "bootstrap-tagsinput.js" %>
+
+    <%= stylesheet_link_tag "bootstrap-multiselect" %>
+    <%= javascript_include_tag "bootstrap-multiselect" %>
+
+    <!-- typeahead css -->
+    <%= stylesheet_link_tag "typeahead.js-bootstrap.css" %>
+
+    <!-- x-editable js plugin -->
+    <%= stylesheet_link_tag "bootstrap-editable.css" %>
+    <%= stylesheet_link_tag "//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" %>
+
+    <!-- bootstrap datepicker http://www.eyecon.ro/bootstrap-datepicker/ -->
+    <%= javascript_include_tag "bootstrap-datepicker" %>
+    <%= stylesheet_link_tag "datepicker" %>
+
+    <!-- bootstrap switch -->
+    <%= javascript_include_tag "bootstrap-switch.min.js" %>
+    <%= stylesheet_link_tag "bootstrap-switch.min.css" %>
+
+    <!-- http://www.plupload.com -->
+    <%= javascript_include_tag "plupload/plupload.full.min" %>
+    <%= javascript_include_tag "plupload/jquery.plupload.queue" %>
+    <%= stylesheet_link_tag "plupload/jquery.plupload.queue" %>
+    <%= javascript_include_tag "upload_file" %>
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- from nifty template -->
+    <!--Open Sans Font [ OPTIONAL ] -->
+    <!-- <link href="//fonts.googleapis.com/css?family=Roboto:400,300,500,700" rel="stylesheet"> -->
+    <!--Nifty Stylesheet [ REQUIRED ]-->
+    <% unless @landing %>
+      <%= stylesheet_link_tag "nifty.min.css" %>
+      <!--Page Load Progress Bar [ OPTIONAL ]-->
+      <%= stylesheet_link_tag "pace.min.css" %>
+      <%= javascript_include_tag "pace.min.js" %>
+      <!-- color box -->
+      <%= stylesheet_link_tag "colorbox.css" %>
+      <%= javascript_include_tag "jquery.colorbox.js" %>
+
+      <!-- https://github.com/kartik-v/bootstrap-fileinput -->
+      <%= stylesheet_link_tag "fileinput" %>
+      
+      <!-- end -->
+      <%= stylesheet_link_tag "main" %>
+    <% end %>
+
+    <!-- multifile upload https://github.com/fyneworks/multifile --> 
+    <%= javascript_include_tag "multifile/jquery.MetaData.js" %>
+    <%= javascript_include_tag "multifile/jQuery.MultiFile.min.js" %>
+    <%= javascript_include_tag "multifile/jquery.form.js" %>
+
+  </head>
+  <body class="" data-spy="scroll" data-target="#header">
+    <!-- devise notification 
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    -->
+    <div id="container" class="effect mainnav-lg">
+      <% unless @landing %>
+        <!--NAVBAR-->
+        <!--===================================================-->
+        <%= render :partial => 'layouts/header' %>
+        <!-- alert/notification -->
+        <div id="floating-top-right" class="floating-container">
+        </div>
+
+        <button id="scroll-top" class="btn in">
+          <!-- <i class="fa fa-chevron-up"></i> -->
+          <img src="/assets/backtotop.png" />
+        </button>        
+
+      <% end %>
+      <%= yield %>
+
+      <div id="runtime" class="hide" >
+      </div>
+
+    </div>
+    <%= render :partial => 'layouts/footer' %>
+
+  <!-- load js -->
+  <%= javascript_include_tag "bootstrap-editable.min.js" %>
+  <!-- load typeaheadjs-->
+  <%= javascript_include_tag "typeaheadjs.js" %>
+  <%= javascript_include_tag "typeahead.js" %>
+  <%= javascript_include_tag "bloodhound.js" %>
+  <!--Fast Click [ OPTIONAL ]-->
+  <%= javascript_include_tag "fastclick.min.js" %>
+  <!--Nifty Admin [ RECOMMENDED ]-->
+  <%= javascript_include_tag "nifty.min.js" %>
+  <!-- https://github.com/1000hz/bootstrap-validator -->
+  <%= javascript_include_tag "validator.js" %>
+  <%= javascript_include_tag "underscore-min" %>
+  <!-- https://github.com/kartik-v/bootstrap-fileinput -->
+  <%= javascript_include_tag "fileinput" %>
+  <!-- https://github.com/carhartl/jquery-cookie -->
+  <%= javascript_include_tag "jquery.cookie.js" %>
+  <!-- http://bootboxjs.com/ -->
+  <%= javascript_include_tag "bootbox.min.js" %>
+  <!-- application main js -->
+  <%= javascript_include_tag "main" %>
+
+  </body>
+</html>
+

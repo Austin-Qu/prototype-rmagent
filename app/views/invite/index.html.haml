@@ -1,0 +1,155 @@
+= stylesheet_link_tag "main"
+= stylesheet_link_tag "apply_now"
+
+.container
+  .row
+    /.jumbotron
+    .container.heading-center   
+      .h2.text-thin.text-blue Request an Invitation 
+      .h4.text-thin.text-blue Please complete the following fields.
+
+      /.h4.text-thin.text-blue Find your prospective buyers and collaborate with your colleagues.
+    /%h2.form-signup-h4 
+    /%h3.form-signup-h3 
+  %br
+  .row
+    .col-md-8.col-sm-8.sign_up_info
+      .logo
+      = form_tag "/invite/request_invite", :class => "form-horizontal", "data-toggle"=>"validator", :role=>"form" do
+        / .row
+        /   .col-sm-6
+        /     = label_tag :email, "Business Email", :class => "col-sm-3 control-label"
+        .row
+          %hr
+            .error_message
+              - if flash[:alert]
+                = flash[:alert]
+            .col-sm-6
+              - @user_params = Hash.new unless @user_params
+              .form-group
+                = label_tag :email, "Business Email", :class => "col-sm-3 control-label"
+                .col-sm-12
+                  = email_field_tag :email, @user_params[:email], :class => "form-control input-sm", :required=>true, "data-error"=>"That email address is invalid"
+                  %span.help-block.with-errors
+            .col-sm-6
+              .form-group
+                = label_tag :mobile, "Mobile", :class => "col-sm-3 control-label"
+                .col-sm-12
+                  = text_field_tag :mobile, @user_params[:mobile], :class => "form-control input-sm", :required=>true              
+          / .row
+          /   .col-sm-6
+          /     = label_tag :first_name, "First Name", :class => "col-sm-3 control-label"
+          /   .col-sm-6
+          /     = label_tag :last_name, "Last Name", :class => "col-sm-3 control-label"
+        .row
+          .col-sm-6
+            .form-group
+              = label_tag :first_name, "First Name", :class => "col-sm-3 control-label"
+              .col-sm-12
+                = text_field_tag :first_name, @user_params[:first_name], :class => "form-control input-sm", :required=>true
+          .col-sm-6
+            .form-group
+              = label_tag :last_name, "Last Name", :class => "col-sm-3 control-label"
+              .col-sm-12
+                = text_field_tag :last_name, @user_params[:last_name], :class => "form-control input-sm", :required=>true
+        / .row
+        /   .col-sm-6
+        /     = label_tag :title, "Job Title", :class => "col-sm-3 control-label"
+        /   .col-sm-6
+        /     = label_tag :business_name, "Company", :class => "col-sm-3 control-label"
+        .row
+          .col-sm-6
+            .form-group
+              = label_tag :title, "Job Title", :class => "col-sm-3 control-label"
+              .col-sm-12
+                = select_tag :title, options_for_select(Rails.application.config.common_titles, @user_params[:title]), :include_blank => true, :class => "form-control input-sm", :required=>true
+          .col-sm-6
+            .form-group
+              = label_tag :business_name, "Company", :class => "col-sm-3 control-label"
+              .col-sm-12
+                = text_field_tag :business_name, @user_params[:business_name], :class => "form-control input-sm", :required=>true
+        .row
+          / .col-sm-6
+          /   .form-group
+          /     / .col-md-1
+          /     /   = check_box_tag 'agreed', nil, false, {:class => "col-sm-3 control-label", :required=>true, "data-error"=>"Before you wreck yourself", :style => "margin-left:80%"}
+          /     .col-md-11.apply-agreement
+          /       By continuing, I agree to the  
+          /       %a{:href=>"#"}
+          /         Seller Agreement 
+          /       &
+          /       %a{:href=>"#"}
+          /         Privacy Policy
+          /       Already have a realtymate account?
+          /       %a{:href=>'#'}
+          /         Sign in.
+          /       .help-block.with_errors
+          .col-sm-12
+            .form-group
+              .col-sm-12
+                .container.signup_btn
+                  = submit_tag "Send Request", :class => "btn btn-primary btn-lg btn-block"
+                  /= submit_tag "Apply Now", :class => "btn btn-success"
+
+
+
+        / .form-group
+        /   = label_tag :email, nil, :class => "col-sm-3 control-label"
+        /   .col-sm-9
+        /     = email_field_tag :email, nil, :class => "form-control input-sm", :required=>true, "data-error"=>"That email address is invalid"
+        /     %span.help-block.with-errors
+        / .form-group
+        /   = label_tag :title, nil, :class => "col-sm-3 control-label"
+        /   .col-sm-9
+        /     = select_tag :title, options_for_select(Rails.application.config.common_titles), :include_blank => true, :class => "form-control input-sm", :required=>true
+        / .form-group
+        /   = label_tag :first_name, "First Name", :class => "col-sm-3 control-label"
+        /   .col-sm-9
+        /     = text_field_tag :first_name, nil, :class => "form-control input-sm", :required=>true
+        / .form-group
+        /   = label_tag :last_name, "Last Name", :class => "col-sm-3 control-label"
+        /   .col-sm-9
+        /     = text_field_tag :last_name, nil, :class => "form-control input-sm", :required=>true
+        / .form-group
+        /   = label_tag :business_name, "Business Name", :class => "col-sm-3 control-label"
+        /   .col-sm-9
+        /     = text_field_tag :business_name, nil, :class => "form-control input-sm", :required=>true
+        / .form-group
+        /   = label_tag :acn, "ACN", :class => "col-sm-3 control-label" 
+        /   .col-sm-9
+        /     = text_field_tag :acn, nil, :class => "form-control input-sm"
+        / .form-group
+        /   = label_tag :postcode, nil, :class => "col-sm-3 control-label" 
+        /   .col-sm-9
+        /     = text_field_tag :postcode, nil, :class => "form-control input-sm"
+        / .form-group
+        /   .col-md-3
+        /     = check_box_tag 'agreed', nil, false, {:class => "col-sm-3 control-label", :required=>true, "data-error"=>"Before you wreck yourself", :style => "margin-left:80%"}
+        /   .col-md-9
+        /     By continuing, I agree to the  
+        /     %a{:href=>"#"}
+        /       Seller Agreement 
+        /     &
+        /     %a{:href=>"#"}
+        /       Privacy Policy
+        /     Already have a realtymate account?
+        /     %a{:href=>'#'}
+        /       Sign in.
+        /     .help-block.with_errors
+        / .form-group
+        /   .col-sm-9
+        /     .container.signup_btn
+        /       = submit_tag "Apply Now", :class => "btn btn-primary btn-lg btn-block"
+        /       /= submit_tag "Apply Now", :class => "btn btn-success"
+    .col-md-4.col-sm-2.apply_now_right_panel
+      .col-md-12.col-sm-12.vcenter
+        = image_tag "apply_now_head.png"
+      .col-md-06.col-sm-06.vcenter.apply_now_right_panel_text
+        %h4 
+          Did you know the RealtyMate inspection tool is the only free tool that helps agent like you register leads from open inspections?
+      
+      .col-md-12.col-sm-12.vcenter
+        = image_tag "apply_now_ipad.png"
+  
+      .col-md-12.col-sm-12.vcenter
+        = image_tag "apply_now_appstore.png"

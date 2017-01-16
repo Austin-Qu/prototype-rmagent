@@ -1,0 +1,8 @@
+// render side bar not working for some reason FIXEME
+//$("#sidebar").html("<%= escape_javascript(render partial: '/layouts/sidebar') %>");
+//init_sidebar();
+$('span.leads').text("<%= @leads.count %> leads");
+// render panel heading
+$(".panel-heading.leads").html("<%= escape_javascript(render partial: 'lead_panel_heading', locals: {:on_type => @on_type}) %>");
+// render main panel
+$(".panel-body.leads").html("<%= escape_javascript(render partial: 'lead_panel_body', locals: {:leads => @leads, :on_type => @on_type}) %>");

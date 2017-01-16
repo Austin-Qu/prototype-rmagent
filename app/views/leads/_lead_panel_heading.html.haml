@@ -1,0 +1,18 @@
+%ul.nav.nav-tabs.nav-justified
+  - if on_type == 'Buyer'
+    - buyer_class = 'active'
+    - renter_class = ''
+  - else
+    - buyer_class = ''
+    - renter_class = 'active'
+
+  %li{:class => buyer_class}
+    %a{:href => "/leads?type=Buyer", :class => "active-a", "data-remote" => "true"} 
+      Buyers
+      %span.badge
+        = current_user.leads_users.where(:on_type => 'Buyer').count
+  %li{:class => renter_class}
+    %a{:href => "/leads?type=Renter", :class => "active-a", "data-remote" => "true"}
+      Tenants
+      %span.badge
+        = current_user.leads_users.where(:on_type => 'Renter').count
